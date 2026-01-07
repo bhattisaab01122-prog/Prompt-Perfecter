@@ -30,11 +30,23 @@ export function Layout({ children }: { children: ReactNode }) {
         {children}
       </main>
 
-      <footer className="border-t py-6 md:py-0">
-        <div className="container mx-auto px-4 flex flex-col items-center justify-between gap-4 md:h-16 md:flex-row">
-          <p className="text-sm text-muted-foreground text-center md:text-left">
-            Built with React, Tailwind & shadcn/ui.
-          </p>
+      <footer className="border-t py-12 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-2">
+              <img src="/images/logo.png" alt="PromptFix" className="h-6 w-auto grayscale opacity-50" />
+              <span className="text-sm font-semibold text-muted-foreground">PromptFix</span>
+            </div>
+            
+            <nav className="flex items-center gap-8">
+              <a href="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">Privacy Policy</a>
+              <a href="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">Contact Us</a>
+            </nav>
+
+            <p className="text-sm text-muted-foreground">
+              &copy; {new Date().getFullYear()} PromptFix. All rights reserved.
+            </p>
+          </div>
         </div>
       </footer>
     </div>
