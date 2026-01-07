@@ -79,7 +79,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid gap-6 md:grid-cols-2" id="input-section">
             {/* Input Section */}
             <Card className="border-2 border-border/60 shadow-lg relative overflow-hidden group">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-50" />
@@ -205,6 +205,43 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <BlogSection />
     </Layout>
+  );
+}
+
+function BlogSection() {
+  return (
+    <section className="mt-16 border-t pt-16">
+      <div className="flex items-center justify-between mb-8">
+        <h3 className="text-2xl font-bold tracking-tight">Latest Guides</h3>
+        <Button variant="ghost" className="text-primary hover:text-primary/80" asChild>
+          <a href="#input-section">Back to Optimizer</a>
+        </Button>
+      </div>
+      
+      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <Card className="border-2 border-border/40 hover:border-primary/20 transition-all hover:shadow-xl group">
+          <CardHeader>
+            <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
+              <Zap className="w-6 h-6" />
+            </div>
+            <CardTitle className="text-xl">How to Write 10x Better AI Prompts: A Beginner’s Guide</CardTitle>
+            <CardDescription>Master the art of prompt engineering with these simple tips.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-muted-foreground text-sm leading-relaxed">
+              Writing effective prompts is the secret to unlocking the full potential of AI. Whether you're using ChatGPT, Claude, or Midjourney, the quality of your output depends entirely on your input.
+            </p>
+            <p className="text-muted-foreground text-sm leading-relaxed">
+              Using <strong className="text-foreground">PromptFix</strong> helps in getting precise AI results by automatically restructuring your rough ideas into clear, context-rich instructions that AI models love.
+            </p>
+            <Button variant="link" className="p-0 h-auto text-primary" asChild>
+              <a href="#input-section">Try the Optimizer now &rarr;</a>
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    </section>
   );
 }
