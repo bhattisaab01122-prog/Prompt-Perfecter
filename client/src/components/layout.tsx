@@ -7,11 +7,9 @@ export function Layout({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground">
-              <Sparkles className="w-5 h-5" />
-            </div>
+            <img src="/images/logo.png" alt="PromptFix Logo" className="w-10 h-10 object-contain" />
             <h1 className="text-xl font-bold tracking-tight text-foreground">
-              Prompt<span className="text-primary">Opt</span>
+              PromptFix
             </h1>
           </div>
           <nav className="flex gap-4">
