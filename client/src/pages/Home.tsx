@@ -72,10 +72,10 @@ export default function Home() {
         <div className="lg:col-span-8 space-y-8">
           <div className="text-center lg:text-left space-y-2 mb-8">
             <h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl mb-4">
-              Refine your prompts with <span className="text-primary bg-primary/10 px-2 py-1 rounded-lg">AI</span>
+              PromptFix
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl">
-              Transform basic ideas into powerful, engineered prompts that get better results from LLMs like GPT-4 and Claude.
+              PromptFix is the ultimate AI Prompt Optimizer designed to help you get the best results from ChatGPT, Claude, and Midjourney. Our free tool ensures your AI interactions are smarter and faster.
             </p>
           </div>
 
