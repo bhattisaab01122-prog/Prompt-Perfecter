@@ -7,16 +7,16 @@ export function Layout({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-2">
+              <img src="/images/logo.png" alt="PromptFix Logo" className="h-8 w-auto object-contain" />
+              <h1 className="text-xl font-bold tracking-tight">
+                <span className="text-foreground">Prompt</span>
+                <span className="text-primary">Fix</span>
+              </h1>
               <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground">
                 <Sparkles className="w-5 h-5" />
               </div>
-              <img src="/images/logo.png" alt="PromptFix Logo" className="h-8 w-auto object-contain" />
             </div>
-            <h1 className="text-xl font-bold tracking-tight">
-              <span className="text-foreground">Prompt</span>
-              <span className="text-primary">Fix</span>
-            </h1>
           </div>
           <nav className="flex gap-4">
             <a href="https://openai.com" target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
