@@ -160,13 +160,34 @@ export default function Home() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="h-[300px] flex flex-col items-center justify-center text-muted-foreground space-y-4"
+                      className="h-[300px] flex flex-col items-center justify-center text-muted-foreground space-y-6"
                     >
-                      <div className="relative">
-                        <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full animate-pulse" />
-                        <RefreshCw className="h-8 w-8 animate-spin relative z-10 text-primary" />
+                      <div className="relative flex items-center justify-center">
+                        <motion.div 
+                          className="absolute inset-0 bg-primary/20 blur-2xl rounded-full"
+                          animate={{ 
+                            scale: [1, 1.5, 1],
+                            opacity: [0.3, 0.6, 0.3]
+                          }}
+                          transition={{ 
+                            duration: 2,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                          }}
+                        />
+                        <div className="relative flex items-center justify-center h-20 w-20">
+                          <motion.div
+                            className="absolute inset-0 border-4 border-primary/30 border-t-primary rounded-full"
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                          />
+                          <Wand2 className="h-8 w-8 text-primary animate-pulse" />
+                        </div>
                       </div>
-                      <p className="text-sm font-medium animate-pulse">Analyzing and improving structure...</p>
+                      <div className="text-center space-y-2">
+                        <p className="text-base font-semibold text-foreground animate-pulse">AI is Thinking...</p>
+                        <p className="text-xs text-muted-foreground max-w-[200px]">Crafting your perfect prompt with advanced logic.</p>
+                      </div>
                     </motion.div>
                   ) : optimizedPrompt ? (
                     <motion.div
