@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Wand2, Copy, Check, RefreshCw, Zap, Lightbulb, Send, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "wouter";
 
 export default function Home() {
   const [originalPrompt, setOriginalPrompt] = useState("");
@@ -276,22 +277,26 @@ function BlogSection() {
     {
       title: "Top 5 ChatGPT Prompts for Business Growth",
       summary: "Learn how to use PromptFix to create professional business strategies and scale your operations.",
-      icon: Zap
+      icon: Zap,
+      url: "#input-section"
     },
     {
       title: "How to Avoid Hallucinations in AI Results",
       summary: "Discover how optimized prompts lead to more accurate AI answers and reliable data outputs.",
-      icon: Lightbulb
+      icon: Lightbulb,
+      url: "/articles/hallucinations"
     },
     {
       title: "The Secret to High-Quality Midjourney Images",
       summary: "Use our tool to refine your image generation descriptions for stunning, photorealistic results.",
-      icon: Wand2
+      icon: Wand2,
+      url: "/articles/midjourney"
     },
     {
       title: "How to Write 10x Better AI Prompts: A Beginner’s Guide",
       summary: "Master the art of prompt engineering with these simple tips and PromptFix techniques.",
-      icon: Send
+      icon: Send,
+      url: "#input-section"
     }
   ];
 
@@ -318,7 +323,7 @@ function BlogSection() {
                 {article.summary}
               </p>
               <Button variant="link" className="p-0 h-auto text-primary text-sm" asChild>
-                <a href="#input-section">Read more &rarr;</a>
+                <Link href={article.url}>Read more &rarr;</Link>
               </Button>
             </CardContent>
           </Card>
