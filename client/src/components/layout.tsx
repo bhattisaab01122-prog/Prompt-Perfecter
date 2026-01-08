@@ -1,6 +1,26 @@
 import { ReactNode } from "react";
-import { Sparkles, Twitter, Facebook, Linkedin } from "lucide-react";
+import { Sparkles, Twitter, Facebook, Linkedin, Moon, Sun } from "lucide-react";
 import { SiX } from "react-icons/si";
+import { useTheme } from "next-themes";
+import { Button } from "@/components/ui/button";
+
+export function ThemeToggle() {
+  const { theme, setTheme } = useTheme();
+
+  return (
+    <Button
+      variant="ghost"
+      size="icon"
+      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      className="h-9 w-9"
+      data-testid="button-theme-toggle"
+    >
+      <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+      <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+      <span className="sr-only">Toggle theme</span>
+    </Button>
+  );
+}
 
 export function Layout({ children }: { children: ReactNode }) {
   const shareUrl = "https://promptfix.replit.app/";
@@ -39,7 +59,8 @@ export function Layout({ children }: { children: ReactNode }) {
               </div>
             </div>
           </div>
-          <nav className="flex gap-4">
+          <nav className="flex items-center gap-4">
+            <ThemeToggle />
             <a href="https://openai.com" target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
               Powered by OpenAI
             </a>

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Wand2, Copy, Check, RefreshCw, Zap } from "lucide-react";
+import { Wand2, Copy, Check, RefreshCw, Zap, Lightbulb, Send, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -205,8 +205,48 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <HowItWorks />
       <BlogSection />
     </Layout>
+  );
+}
+
+function HowItWorks() {
+  const steps = [
+    {
+      icon: Lightbulb,
+      title: "1. Enter Prompt",
+      description: "Paste your basic idea or rough draft into the input box."
+    },
+    {
+      icon: Wand2,
+      title: "2. Optimize",
+      description: "Our AI restructures your prompt for clarity and context."
+    },
+    {
+      icon: CheckCircle2,
+      title: "3. Perfect Result",
+      description: "Get a production-ready prompt that delivers precise results."
+    }
+  ];
+
+  return (
+    <section className="mt-16 border-t pt-16">
+      <h3 className="text-2xl font-bold tracking-tight mb-8 text-center">How It Works</h3>
+      <div className="grid gap-8 md:grid-cols-3">
+        {steps.map((step, idx) => (
+          <div key={idx} className="flex flex-col items-center text-center space-y-4">
+            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+              <step.icon className="w-6 h-6" />
+            </div>
+            <h4 className="font-semibold text-lg">{step.title}</h4>
+            <p className="text-sm text-muted-foreground leading-relaxed max-w-[200px]">
+              {step.description}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
 
