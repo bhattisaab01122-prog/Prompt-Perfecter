@@ -68,7 +68,12 @@ export default function Home() {
 
   return (
     <Layout>
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-7xl mx-auto">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        className="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-7xl mx-auto"
+      >
         {/* Main Content Area */}
         <div className="lg:col-span-8 space-y-8">
           <div className="text-center lg:text-left space-y-2 mb-8">
@@ -96,7 +101,7 @@ export default function Home() {
               <CardContent>
                 <Textarea
                   placeholder="e.g. Write a blog post about coffee..."
-                  className="min-h-[300px] resize-none text-base p-4 bg-muted/30 border-muted-foreground/20 focus:border-primary/50 transition-colors"
+                  className="min-h-[300px] resize-none text-base p-4 bg-muted/30 border-2 border-border focus:border-primary/50 transition-colors"
                   value={originalPrompt}
                   onChange={(e) => setOriginalPrompt(e.target.value)}
                 />
@@ -226,7 +231,7 @@ export default function Home() {
             <HistoryList onSelect={loadFromHistory} />
           </div>
         </div>
-      </div>
+      </motion.div>
       <HowItWorks />
       <BlogSection />
     </Layout>
