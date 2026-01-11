@@ -79,10 +79,10 @@ export default function Home() {
         {/* Main Content Area */}
         <div className="lg:col-span-8 space-y-8">
           <div className="text-center lg:text-left space-y-2 mb-8">
-            <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl mb-4">
-              Refine your prompts with <span className="text-primary bg-primary/10 px-2 py-1 rounded-lg">AI</span>
+            <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl mb-4">
+              Best Free AI Prompt Optimizer — <span className="text-primary bg-primary/10 px-2 py-1 rounded-lg">Refine Your Prompts</span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl">
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl">
               PromptFix is the ultimate AI Prompt Optimizer designed to help you get the best results from ChatGPT, Claude, and Midjourney. Our free tool ensures your AI interactions are smarter and faster.
             </p>
           </div>
@@ -271,6 +271,7 @@ export default function Home() {
         </div>
       </motion.div>
       <HowItWorks />
+      <AboutSection />
       <BlogSection />
     </Layout>
   );
@@ -325,6 +326,31 @@ function HowItWorks() {
           </motion.div>
         ))}
       </div>
+    </section>
+  );
+}
+
+function AboutSection() {
+  return (
+    <section className="mt-16 border-t pt-16">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="max-w-3xl mx-auto text-center"
+      >
+        <h2 className="text-2xl font-bold tracking-tight mb-6">About PromptFix</h2>
+        <p className="text-muted-foreground leading-relaxed mb-4">
+          PromptFix is your go-to <strong>ChatGPT prompt enhancer</strong> and <strong>Midjourney prompt helper</strong>. 
+          Whether you're crafting emails, generating creative content, or building complex AI workflows, our 
+          <strong> AI prompt engineering tool</strong> transforms your rough ideas into perfectly structured prompts.
+        </p>
+        <p className="text-muted-foreground leading-relaxed">
+          Designed for creators, marketers, developers, and anyone who wants to get better results from AI, 
+          PromptFix uses advanced language models to analyze and optimize your prompts for clarity, context, 
+          and precision. It's 100% free to use — no signup required.
+        </p>
+      </motion.div>
     </section>
   );
 }
