@@ -60,7 +60,7 @@ export function HistoryList({ onSelect }: HistoryListProps) {
             {history.map((item) => (
               <div 
                 key={item.id}
-                className="group relative flex flex-col gap-2 rounded-lg border p-3 text-sm transition-all hover:bg-accent/50 hover:shadow-sm"
+                className="group relative flex flex-col gap-2 rounded-lg border p-3 text-sm transition-all hover:bg-accent/50 hover:shadow-md hover:-translate-y-0.5"
               >
                 <div className="flex w-full flex-col gap-1">
                   <div className="flex items-center">

@@ -69,9 +69,9 @@ export default function Home() {
   return (
     <Layout>
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
         className="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-7xl mx-auto"
       >
         {/* Main Content Area */}
@@ -259,18 +259,32 @@ function HowItWorks() {
 
   return (
     <section className="mt-16 border-t pt-16">
-      <h3 className="text-2xl font-bold tracking-tight mb-8 text-center">How It Works</h3>
+      <motion.h3 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="text-2xl font-bold tracking-tight mb-8 text-center"
+      >
+        How It Works
+      </motion.h3>
       <div className="grid gap-8 md:grid-cols-3">
         {steps.map((step, idx) => (
-          <div key={idx} className="flex flex-col items-center text-center space-y-4">
-            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+          <motion.div 
+            key={idx} 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: idx * 0.1 }}
+            className="flex flex-col items-center text-center space-y-4"
+          >
+            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary transition-transform hover:scale-110">
               <step.icon className="w-6 h-6" />
             </div>
             <h4 className="font-semibold text-lg">{step.title}</h4>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-[200px]">
               {step.description}
             </p>
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>
@@ -316,22 +330,33 @@ function BlogSection() {
       
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
         {articles.map((article, idx) => (
-          <Card key={idx} className="border-2 border-border/40 hover:border-primary/20 transition-all hover:shadow-xl group flex flex-col">
-            <CardHeader className="flex-1">
-              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
-                <article.icon className="w-5 h-5" />
-              </div>
-              <CardTitle className="text-lg leading-tight">{article.title}</CardTitle>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                {article.summary}
-              </p>
-              <Button variant="link" className="p-0 h-auto text-primary text-sm" asChild>
-                <Link href={article.url}>Read more &rarr;</Link>
-              </Button>
-            </CardContent>
-          </Card>
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: idx * 0.1 }}
+            className="flex"
+          >
+            <Card className="border-2 border-border/40 hover:border-primary/20 transition-all hover:shadow-xl hover:-translate-y-1 group flex flex-col w-full">
+              <CardHeader className="flex-1">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
+                  <article.icon className="w-5 h-5" />
+                </div>
+                <CardTitle className="text-lg leading-tight">{article.title}</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+                  {article.summary}
+                </p>
+                <Button variant="link" className="p-0 h-auto text-primary text-sm hover:translate-x-1 transition-transform group" asChild>
+                  <Link href={article.url}>
+                    Read more <span className="ml-1 inline-block transition-transform group-hover:translate-x-1">&rarr;</span>
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
+          </motion.div>
         ))}
       </div>
     </section>
