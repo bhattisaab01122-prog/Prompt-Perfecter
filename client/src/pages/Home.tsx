@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Wand2, Copy, Check, RefreshCw, Zap, Lightbulb, Send, CheckCircle2 } from "lucide-react";
+import { Wand2, Copy, Check, RefreshCw, Zap, Lightbulb, Send, CheckCircle2, ThumbsUp, ThumbsDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
@@ -15,6 +15,7 @@ export default function Home() {
   const [originalPrompt, setOriginalPrompt] = useState("");
   const [optimizedPrompt, setOptimizedPrompt] = useState("");
   const [copied, setCopied] = useState(false);
+  const [feedback, setFeedback] = useState<"up" | "down" | null>(null);
   const { toast } = useToast();
   
   const optimizeMutation = useOptimizePrompt();
@@ -34,6 +35,7 @@ export default function Home() {
       {
         onSuccess: (data) => {
           setOptimizedPrompt(data.optimizedPrompt);
+          setFeedback(null);
           toast({
             title: "Success!",
             description: "Your prompt has been optimized.",
@@ -109,9 +111,10 @@ export default function Home() {
                   <Button 
                     onClick={handleOptimize}
                     disabled={optimizeMutation.isPending || !originalPrompt.trim()}
-                    className="w-full md:w-auto font-semibold shadow-xl shadow-primary/20"
+                    className="w-full md:w-auto font-semibold"
                     size="lg"
-                    variant={optimizeMutation.isPending ? "secondary" : "default"}
+                    variant={optimizeMutation.isPending ? "secondary" : "premium"}
+                    data-testid="button-optimize"
                   >
                     {optimizeMutation.isPending ? (
                       <>
@@ -200,13 +203,48 @@ export default function Home() {
                       key="result"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="relative h-[300px]"
+                      className="relative flex flex-col"
                     >
                       <Textarea
                         readOnly
                         value={optimizedPrompt}
-                        className="h-full resize-none border-none bg-transparent p-4 font-mono text-sm leading-relaxed focus-visible:ring-0"
+                        className="h-[260px] resize-none border-none bg-transparent p-4 font-mono text-sm leading-relaxed focus-visible:ring-0"
                       />
+                      <div className="flex items-center justify-center gap-4 pt-3 border-t border-border/50">
+                        <span className="text-xs text-muted-foreground">Is this result helpful?</span>
+                        <div className="flex gap-2">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className={cn(
+                              "h-8 w-8 transition-all",
+                              feedback === "up" && "bg-green-500/20 text-green-500"
+                            )}
+                            onClick={() => {
+                              setFeedback("up");
+                              toast({ description: "Thanks for your feedback!" });
+                            }}
+                            data-testid="button-thumbs-up"
+                          >
+                            <ThumbsUp className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className={cn(
+                              "h-8 w-8 transition-all",
+                              feedback === "down" && "bg-red-500/20 text-red-500"
+                            )}
+                            onClick={() => {
+                              setFeedback("down");
+                              toast({ description: "Thanks! We'll work on improving." });
+                            }}
+                            data-testid="button-thumbs-down"
+                          >
+                            <ThumbsDown className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
                     </motion.div>
                   ) : (
                     <motion.div
