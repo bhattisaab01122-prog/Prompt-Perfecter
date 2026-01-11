@@ -100,7 +100,7 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <Textarea
-                  placeholder="e.g. Write a blog post about coffee..."
+                  placeholder={`e.g. Write a professional email to my boss about a leave request...\n\nCreate a Midjourney prompt for a futuristic city at sunset...\n\nExplain quantum computing to a 10-year-old...`}
                   className="min-h-[300px] resize-none text-base p-4 bg-muted/30 border-2 border-border focus:border-primary/50 transition-colors"
                   value={originalPrompt}
                   onChange={(e) => setOriginalPrompt(e.target.value)}
