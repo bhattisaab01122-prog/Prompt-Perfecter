@@ -50,10 +50,10 @@ export function Layout({ children }: { children: ReactNode }) {
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
               <img src="/images/logo.webp" alt="PromptFix - AI Prompt Fixer and Prompt Engineering Tool Logo" className="h-12 w-auto object-contain dark:invert dark:brightness-[2]" loading="eager" />
-              <h1 className="text-xl font-bold tracking-tight">
+              <span className="text-xl font-bold tracking-tight">
                 <span className="text-foreground">Prompt</span>
                 <span className="text-primary">Fix</span>
-              </h1>
+              </span>
               <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground">
                 <Sparkles className="w-5 h-5" />
               </div>

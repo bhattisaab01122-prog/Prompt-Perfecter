@@ -7,6 +7,16 @@ import { createServer } from "http";
 const app = express();
 
 app.use(compression());
+
+app.use((req, res, next) => {
+  const host = req.get('host') || '';
+  if (host.startsWith('www.')) {
+    const newHost = host.replace('www.', '');
+    return res.redirect(301, `https://${newHost}${req.originalUrl}`);
+  }
+  next();
+});
+
 const httpServer = createServer(app);
 
 declare module "http" {
