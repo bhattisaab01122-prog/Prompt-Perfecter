@@ -10,10 +10,23 @@ app.use(compression());
 
 app.use((req, res, next) => {
   const host = req.get('host') || '';
+  const url = req.originalUrl;
+  
   if (host.startsWith('www.')) {
     const newHost = host.replace('www.', '');
-    return res.redirect(301, `https://${newHost}${req.originalUrl}`);
+    return res.redirect(301, `https://${newHost}${url}`);
   }
+  
+  if (url.endsWith('/index.html')) {
+    const cleanUrl = url.replace('/index.html', '/');
+    return res.redirect(301, `https://getpromptfix.com${cleanUrl}`);
+  }
+  
+  if (url.endsWith('.html')) {
+    const cleanUrl = url.replace('.html', '');
+    return res.redirect(301, `https://getpromptfix.com${cleanUrl}`);
+  }
+  
   next();
 });
 
