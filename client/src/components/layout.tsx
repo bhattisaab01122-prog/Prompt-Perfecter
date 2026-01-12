@@ -81,7 +81,11 @@ export function Layout({ children }: { children: ReactNode }) {
             </div>
             
             <div className="flex flex-col items-center md:items-start gap-4">
-              <nav className="flex items-center gap-8">
+              <nav className="flex items-center flex-wrap gap-6">
+                <a href="/" className="text-sm text-muted-foreground hover:text-primary transition-colors">Home</a>
+                <a href="/#optimizer" className="text-sm text-muted-foreground hover:text-primary transition-colors">Start Optimizing</a>
+                <a href="/articles/hallucinations" className="text-sm text-muted-foreground hover:text-primary transition-colors">AI Tips</a>
+                <a href="/articles/midjourney" className="text-sm text-muted-foreground hover:text-primary transition-colors">Midjourney Guide</a>
                 <a href="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">Privacy Policy</a>
                 <a href="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">Contact Us</a>
               </nav>

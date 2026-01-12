@@ -80,14 +80,14 @@ export default function Home() {
         <div className="lg:col-span-8 space-y-8">
           <div className="text-center lg:text-left space-y-2 mb-8">
             <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl mb-4">
-              Best Free AI Prompt Optimizer — <span className="text-primary bg-primary/10 px-2 py-1 rounded-lg">Refine Your Prompts</span>
+              Professional AI Prompt Optimizer
             </h1>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl">
               PromptFix is the ultimate AI Prompt Optimizer designed to help you get the best results from ChatGPT, Claude, and Midjourney. Our free tool ensures your AI interactions are smarter and faster.
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2" id="input-section">
+          <div className="grid gap-6 md:grid-cols-2" id="optimizer">
             {/* Input Section */}
             <Card className="border-2 border-border/60 shadow-lg relative overflow-hidden group">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-50" />
