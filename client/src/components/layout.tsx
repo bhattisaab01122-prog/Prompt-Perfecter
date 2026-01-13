@@ -49,7 +49,7 @@ export function Layout({ children }: { children: ReactNode }) {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
-              <img src="/images/logo.webp" alt="PromptFix - AI Prompt Fixer and Prompt Engineering Tool Logo" className="h-12 w-auto object-contain dark:invert dark:brightness-[2]" loading="eager" />
+              <img src="/images/logo.webp" alt="PromptFix - AI Prompt Fixer and Prompt Engineering Tool Logo" className="h-12 w-auto object-contain dark:invert dark:brightness-[2]" width="48" height="48" loading="eager" />
               <span className="text-xl font-bold tracking-tight">
                 <span className="text-foreground">Prompt</span>
                 <span className="text-primary">Fix</span>
@@ -85,7 +85,7 @@ export function Layout({ children }: { children: ReactNode }) {
           </nav>
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 pb-6">
             <div className="flex items-center gap-2">
-              <img src="/images/logo.webp" alt="Get Prompt Fix - AI Prompt Fixer Tool" className="h-6 w-auto grayscale opacity-50 dark:invert dark:brightness-[2]" loading="lazy" />
+              <img src="/images/logo.webp" alt="Get Prompt Fix - AI Prompt Fixer Tool" className="h-6 w-auto grayscale opacity-50 dark:invert dark:brightness-[2]" width="24" height="24" loading="lazy" />
               <span className="text-sm font-semibold text-muted-foreground">PromptFix</span>
             </div>
             <div className="flex items-center gap-4">
