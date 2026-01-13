@@ -6,14 +6,19 @@ import { createServer } from "http";
 
 const app = express();
 
+// Trust proxy - required for correct host/protocol detection behind reverse proxy
+app.set('trust proxy', true);
+
 // WWW redirect - MUST be first before any other middleware
 app.use((req, res, next) => {
+  // Check both host and x-forwarded-host headers
+  const forwardedHost = req.get('x-forwarded-host') || '';
   const host = req.get('host') || '';
+  const actualHost = (forwardedHost || host).toLowerCase().split(':')[0];
   
   // Immediately redirect www to non-www canonical URL
-  if (host.startsWith('www.')) {
+  if (actualHost.startsWith('www.')) {
     const url = req.originalUrl;
-    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
     return res.redirect(301, `https://getpromptfix.com${url}`);
   }
   
