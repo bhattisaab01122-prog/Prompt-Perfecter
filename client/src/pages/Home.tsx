@@ -80,7 +80,7 @@ export default function Home() {
         <div className="lg:col-span-8 space-y-8">
           <div className="text-center lg:text-left space-y-2 mb-8">
             <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl mb-4">
-              Professional AI Prompt Optimizer
+              Professional <span className="text-[#007bff] font-extrabold" style={{ textShadow: '0 2px 4px rgba(0, 123, 255, 0.3)' }}>AI</span> Prompt Optimizer
             </h1>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl">
               PromptFix is the ultimate AI Prompt Optimizer designed to help you get the best results from ChatGPT, Claude, and Midjourney. Our free tool ensures your AI interactions are smarter and faster.
@@ -339,7 +339,7 @@ function AboutSection() {
         viewport={{ once: true }}
         className="max-w-3xl mx-auto text-center"
       >
-        <h2 className="text-2xl font-bold tracking-tight mb-6">About PromptFix</h2>
+        <h2 className="text-2xl font-bold tracking-tight mb-6">About Prompt<span className="text-[#007bff]">Fix</span></h2>
         <p className="text-muted-foreground leading-relaxed mb-4">
           PromptFix is your go-to <strong>ChatGPT prompt enhancer</strong> and <strong>Midjourney prompt helper</strong>. 
           Whether you're crafting emails, generating creative content, or building complex AI workflows, our 

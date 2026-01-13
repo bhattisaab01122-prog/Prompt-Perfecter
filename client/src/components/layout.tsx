@@ -72,41 +72,37 @@ export function Layout({ children }: { children: ReactNode }) {
         {children}
       </main>
 
-      <footer className="border-t py-12 bg-muted/30">
+      <footer className="bg-muted/30">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="border-t border-gray-300 dark:border-gray-700" />
+          <nav className="flex items-center justify-center flex-wrap gap-8 py-6">
+            <a href="/" className="text-sm text-muted-foreground hover:text-primary transition-colors px-2">Home</a>
+            <a href="/#optimizer" className="text-sm text-muted-foreground hover:text-primary transition-colors px-2">Start Optimizing</a>
+            <a href="/articles/hallucinations" className="text-sm text-muted-foreground hover:text-primary transition-colors px-2">AI Tips</a>
+            <a href="/articles/midjourney" className="text-sm text-muted-foreground hover:text-primary transition-colors px-2">Midjourney Guide</a>
+            <a href="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors px-2">Privacy Policy</a>
+            <a href="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors px-2">Contact Us</a>
+          </nav>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 pb-6">
             <div className="flex items-center gap-2">
               <img src="/images/logo.webp" alt="Get Prompt Fix - AI Prompt Fixer Tool" className="h-6 w-auto grayscale opacity-50 dark:invert dark:brightness-[2]" loading="lazy" />
               <span className="text-sm font-semibold text-muted-foreground">PromptFix</span>
             </div>
-            
-            <div className="flex flex-col items-center md:items-start gap-4">
-              <nav className="flex items-center flex-wrap gap-6">
-                <a href="/" className="text-sm text-muted-foreground hover:text-primary transition-colors">Home</a>
-                <a href="/#optimizer" className="text-sm text-muted-foreground hover:text-primary transition-colors">Start Optimizing</a>
-                <a href="/articles/hallucinations" className="text-sm text-muted-foreground hover:text-primary transition-colors">AI Tips</a>
-                <a href="/articles/midjourney" className="text-sm text-muted-foreground hover:text-primary transition-colors">Midjourney Guide</a>
-                <a href="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">Privacy Policy</a>
-                <a href="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">Contact Us</a>
-              </nav>
-              
-              <div className="flex items-center gap-4 mt-2">
-                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Share:</span>
-                {shareLinks.map((social) => (
-                  <a
-                    key={social.name}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-primary transition-all hover:scale-110"
-                    title={`Share on ${social.name}`}
-                  >
-                    <social.icon className="w-4 h-4" />
-                  </a>
-                ))}
-              </div>
+            <div className="flex items-center gap-4">
+              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Share:</span>
+              {shareLinks.map((social) => (
+                <a
+                  key={social.name}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-primary transition-all hover:scale-110"
+                  title={`Share on ${social.name}`}
+                >
+                  <social.icon className="w-4 h-4" />
+                </a>
+              ))}
             </div>
-
             <p className="text-sm text-muted-foreground">
               &copy; {new Date().getFullYear()} PromptFix. All rights reserved.
             </p>
