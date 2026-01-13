@@ -6,24 +6,32 @@ import { createServer } from "http";
 
 const app = express();
 
-app.use(compression());
-
+// WWW redirect - MUST be first before any other middleware
 app.use((req, res, next) => {
   const host = req.get('host') || '';
-  const url = req.originalUrl;
   
-  // WWW to non-WWW redirect - always redirect to canonical URL
+  // Immediately redirect www to non-www canonical URL
   if (host.startsWith('www.')) {
+    const url = req.originalUrl;
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
     return res.redirect(301, `https://getpromptfix.com${url}`);
   }
   
-  // Clean URL redirects
+  next();
+});
+
+app.use(compression());
+
+// Clean URL redirects
+app.use((req, res, next) => {
+  const url = req.originalUrl;
+  
   if (url.endsWith('/index.html')) {
     const cleanUrl = url.replace('/index.html', '/');
     return res.redirect(301, cleanUrl);
   }
   
-  if (url.endsWith('.html') && url !== '/index.html') {
+  if (url.endsWith('.html')) {
     const cleanUrl = url.replace('.html', '');
     return res.redirect(301, cleanUrl);
   }
