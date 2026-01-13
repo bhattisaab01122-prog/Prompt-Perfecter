@@ -11,28 +11,21 @@ app.use(compression());
 app.use((req, res, next) => {
   const host = req.get('host') || '';
   const url = req.originalUrl;
-  const proto = req.get('x-forwarded-proto') || req.protocol;
   
-  // Force HTTPS redirect
-  if (proto === 'http' && process.env.NODE_ENV === 'production') {
-    return res.redirect(301, `https://${host}${url}`);
-  }
-  
-  // WWW to non-WWW redirect
+  // WWW to non-WWW redirect - always redirect to canonical URL
   if (host.startsWith('www.')) {
-    const newHost = host.replace('www.', '');
-    return res.redirect(301, `https://${newHost}${url}`);
+    return res.redirect(301, `https://getpromptfix.com${url}`);
   }
   
   // Clean URL redirects
   if (url.endsWith('/index.html')) {
     const cleanUrl = url.replace('/index.html', '/');
-    return res.redirect(301, `https://getpromptfix.com${cleanUrl}`);
+    return res.redirect(301, cleanUrl);
   }
   
-  if (url.endsWith('.html')) {
+  if (url.endsWith('.html') && url !== '/index.html') {
     const cleanUrl = url.replace('.html', '');
-    return res.redirect(301, `https://getpromptfix.com${cleanUrl}`);
+    return res.redirect(301, cleanUrl);
   }
   
   next();
