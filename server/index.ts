@@ -9,17 +9,26 @@ const app = express();
 // Trust proxy - required for correct host/protocol detection behind reverse proxy
 app.set('trust proxy', true);
 
-// WWW redirect - MUST be first before any other middleware
+// Allow all hosts - no host blocking
 app.use((req, res, next) => {
-  // Check both host and x-forwarded-host headers
+  // Get all possible host headers
   const forwardedHost = req.get('x-forwarded-host') || '';
   const host = req.get('host') || '';
-  const actualHost = (forwardedHost || host).toLowerCase().split(':')[0];
+  const hostname = req.hostname || '';
   
-  // Immediately redirect www to non-www canonical URL
-  if (actualHost.startsWith('www.')) {
-    const url = req.originalUrl;
-    return res.redirect(301, `https://getpromptfix.com${url}`);
+  // Use the most specific host available, normalize to lowercase without port
+  const actualHost = (forwardedHost || host || hostname).toLowerCase().split(':')[0];
+  
+  // Log for debugging (only in production to track www requests)
+  if (actualHost.includes('www') || actualHost.includes('getpromptfix')) {
+    console.log(`[REDIRECT] Host: ${actualHost}, URL: ${req.originalUrl}`);
+  }
+  
+  // Immediately 301 redirect www to non-www canonical URL
+  if (actualHost === 'www.getpromptfix.com' || actualHost.startsWith('www.')) {
+    const redirectUrl = `https://getpromptfix.com${req.originalUrl}`;
+    console.log(`[REDIRECT] Redirecting to: ${redirectUrl}`);
+    return res.redirect(301, redirectUrl);
   }
   
   next();
