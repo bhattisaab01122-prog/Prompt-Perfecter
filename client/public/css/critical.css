@@ -1,0 +1,182 @@
+:root {
+  --background: 0 0% 100%;
+  --foreground: 224 71% 4%;
+  --primary: 221 83% 53%;
+  --primary-foreground: 210 40% 98%;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+.dark {
+  --background: 224 71% 4%;
+  --foreground: 210 40% 98%;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.seo-header {
+  padding: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.seo-header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.seo-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.seo-logo-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.seo-logo-accent {
+  color: #3b82f6;
+}
+
+.seo-nav-link {
+  color: #6b7280;
+  text-decoration: none;
+}
+
+.seo-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.seo-hero {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.seo-h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.seo-h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.seo-h3 {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.seo-text-muted {
+  color: #6b7280;
+}
+
+.seo-text-lg {
+  font-size: 1.25rem;
+}
+
+.seo-text-sm {
+  font-size: 0.875rem;
+}
+
+.seo-text-center {
+  text-align: center;
+}
+
+.seo-max-w-700 {
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.seo-section {
+  margin-bottom: 3rem;
+}
+
+.seo-section-border {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 2rem;
+}
+
+.seo-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.seo-card {
+  border: 2px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+.seo-card-light {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+.seo-aside {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  background: #f9fafb;
+}
+
+.seo-list {
+  margin: 0.5rem 0;
+  padding-left: 1.25rem;
+}
+
+.seo-stat {
+  text-align: center;
+  padding: 1rem;
+}
+
+.seo-stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #3b82f6;
+  margin-bottom: 0.25rem;
+}
+
+.seo-link {
+  color: #3b82f6;
+}
+
+.seo-footer {
+  background: #f9fafb;
+  padding: 2rem 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.seo-footer-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.seo-footer-nav {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}

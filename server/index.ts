@@ -9,7 +9,7 @@ const app = express();
 // Trust proxy - required for correct host/protocol detection behind reverse proxy
 app.set('trust proxy', true);
 
-// Allow all hosts - no host blocking
+// Canonical URL handling: redirect www and IP addresses to https://getpromptfix.com
 app.use((req, res, next) => {
   // Get all possible host headers
   const forwardedHost = req.get('x-forwarded-host') || '';
@@ -19,15 +19,25 @@ app.use((req, res, next) => {
   // Use the most specific host available, normalize to lowercase without port
   const actualHost = (forwardedHost || host || hostname).toLowerCase().split(':')[0];
   
-  // Log for debugging (only in production to track www requests)
-  if (actualHost.includes('www') || actualHost.includes('getpromptfix')) {
-    console.log(`[REDIRECT] Host: ${actualHost}, URL: ${req.originalUrl}`);
+  // Check if the host is an IP address (IPv4 pattern)
+  const isIPAddress = /^(\d{1,3}\.){3}\d{1,3}$/.test(actualHost);
+  
+  // Log for debugging
+  if (actualHost.includes('www') || actualHost.includes('getpromptfix') || isIPAddress) {
+    console.log(`[REDIRECT] Host: ${actualHost}, URL: ${req.originalUrl}, IsIP: ${isIPAddress}`);
   }
   
-  // Immediately 301 redirect www to non-www canonical URL
+  // Redirect IP address requests to canonical domain
+  if (isIPAddress) {
+    const redirectUrl = `https://getpromptfix.com${req.originalUrl}`;
+    console.log(`[REDIRECT] IP to canonical: ${redirectUrl}`);
+    return res.redirect(301, redirectUrl);
+  }
+  
+  // Redirect www to non-www canonical URL
   if (actualHost === 'www.getpromptfix.com' || actualHost.startsWith('www.')) {
     const redirectUrl = `https://getpromptfix.com${req.originalUrl}`;
-    console.log(`[REDIRECT] Redirecting to: ${redirectUrl}`);
+    console.log(`[REDIRECT] WWW to canonical: ${redirectUrl}`);
     return res.redirect(301, redirectUrl);
   }
   
