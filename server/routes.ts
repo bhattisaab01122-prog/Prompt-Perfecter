@@ -44,8 +44,13 @@ export async function registerRoutes(
   });
 
   app.get(api.optimize.history.path, async (req, res) => {
-    const history = await storage.getOptimizations();
-    res.json(history);
+    try {
+      const history = await storage.getOptimizations();
+      res.json(history);
+    } catch (error) {
+      console.error("History fetch error:", error);
+      res.json([]);
+    }
   });
 
   // Seed data if empty
