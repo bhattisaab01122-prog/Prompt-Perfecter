@@ -18,8 +18,32 @@ export function serveStatic(app: Express) {
     );
   }
 
+  // Explicit routes for sitemap.xml and robots.txt with correct Content-Type
+  // This ensures crawlers always get the XML/text file, never the HTML fallback
+  app.get('/sitemap.xml', (_req, res) => {
+    const sitemapPath = path.resolve(distPath, 'sitemap.xml');
+    if (fs.existsSync(sitemapPath)) {
+      res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+      res.setHeader('Expires', new Date(Date.now() + 86400000).toUTCString());
+      res.sendFile(sitemapPath);
+    } else {
+      res.status(404).send('Sitemap not found');
+    }
+  });
+
+  app.get('/robots.txt', (_req, res) => {
+    const robotsPath = path.resolve(distPath, 'robots.txt');
+    if (fs.existsSync(robotsPath)) {
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+      res.sendFile(robotsPath);
+    } else {
+      res.status(404).send('Robots.txt not found');
+    }
+  });
+
   // Serve static assets with cache headers for better performance
-  // Images, CSS, JS get long cache (1 year) since they have hashed filenames
   app.use(express.static(distPath, {
     maxAge: '1y',
     etag: true,
@@ -27,24 +51,17 @@ export function serveStatic(app: Express) {
     setHeaders: (res, filePath) => {
       const ext = path.extname(filePath).toLowerCase();
       
-      // Long cache for versioned assets (CSS, JS, images)
       if (['.js', '.css', '.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.ico', '.woff', '.woff2', '.ttf'].includes(ext)) {
         res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
         res.setHeader('Expires', new Date(Date.now() + 31536000000).toUTCString());
-      }
-      // HTML files get short cache to allow updates
-      else if (['.html'].includes(ext)) {
+      } else if (['.html'].includes(ext)) {
         res.setHeader('Cache-Control', 'public, max-age=3600, must-revalidate');
         res.setHeader('Expires', new Date(Date.now() + 3600000).toUTCString());
-      }
-      // XML files (sitemap, etc) get medium cache
-      else if (['.xml', '.txt'].includes(ext)) {
-        res.setHeader('Cache-Control', 'public, max-age=86400');
-        res.setHeader('Expires', new Date(Date.now() + 86400000).toUTCString());
       }
     }
   }));
 
+  // SPA catch-all: known routes get 200, unknown routes get 404
   app.use("*", (req, res) => {
     const requestPath = req.originalUrl.split('?')[0];
     const isKnownRoute = KNOWN_ROUTES.includes(requestPath);
