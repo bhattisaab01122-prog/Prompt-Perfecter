@@ -109,13 +109,20 @@ app.use((req, res, next) => {
 });
 
 // Serve sitemap.xml and robots.txt with correct Content-Type BEFORE Vite/static middleware
-const rootDir = process.cwd();
+function findStaticFile(filename: string): string | null {
+  const candidates = [
+    path.resolve(process.cwd(), 'dist', 'public', filename),
+    path.resolve(process.cwd(), 'client', 'public', filename),
+  ];
+  for (const candidate of candidates) {
+    if (fs.existsSync(candidate)) return candidate;
+  }
+  return null;
+}
 
 app.get('/sitemap.xml', (_req, res) => {
-  const devPath = path.resolve(rootDir, 'client', 'public', 'sitemap.xml');
-  const prodPath = path.resolve(rootDir, 'dist', 'public', 'sitemap.xml');
-  const filePath = fs.existsSync(prodPath) ? prodPath : devPath;
-  if (fs.existsSync(filePath)) {
+  const filePath = findStaticFile('sitemap.xml');
+  if (filePath) {
     res.setHeader('Content-Type', 'application/xml; charset=utf-8');
     res.setHeader('Cache-Control', 'public, max-age=3600');
     res.sendFile(filePath);
@@ -125,10 +132,8 @@ app.get('/sitemap.xml', (_req, res) => {
 });
 
 app.get('/robots.txt', (_req, res) => {
-  const devPath = path.resolve(rootDir, 'client', 'public', 'robots.txt');
-  const prodPath = path.resolve(rootDir, 'dist', 'public', 'robots.txt');
-  const filePath = fs.existsSync(prodPath) ? prodPath : devPath;
-  if (fs.existsSync(filePath)) {
+  const filePath = findStaticFile('robots.txt');
+  if (filePath) {
     res.setHeader('Content-Type', 'text/plain; charset=utf-8');
     res.setHeader('Cache-Control', 'public, max-age=3600');
     res.sendFile(filePath);
