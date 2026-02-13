@@ -1,5 +1,7 @@
 import express, { type Request, Response, NextFunction } from "express";
 import compression from "compression";
+import fs from "fs";
+import path from "path";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
@@ -9,35 +11,23 @@ const app = express();
 // Trust proxy - required for correct host/protocol detection behind reverse proxy
 app.set('trust proxy', true);
 
-// Canonical URL handling: redirect www and IP addresses to https://getpromptfix.com
+// Canonical URL handling: redirect non-www and IP addresses to https://www.getpromptfix.com
 app.use((req, res, next) => {
-  // Get all possible host headers
   const forwardedHost = req.get('x-forwarded-host') || '';
   const host = req.get('host') || '';
   const hostname = req.hostname || '';
   
-  // Use the most specific host available, normalize to lowercase without port
   const actualHost = (forwardedHost || host || hostname).toLowerCase().split(':')[0];
-  
-  // Check if the host is an IP address (IPv4 pattern)
   const isIPAddress = /^(\d{1,3}\.){3}\d{1,3}$/.test(actualHost);
   
-  // Log for debugging
-  if (actualHost.includes('www') || actualHost.includes('getpromptfix') || isIPAddress) {
-    console.log(`[REDIRECT] Host: ${actualHost}, URL: ${req.originalUrl}, IsIP: ${isIPAddress}`);
-  }
-  
-  // Redirect IP address requests to canonical domain
   if (isIPAddress) {
-    const redirectUrl = `https://getpromptfix.com${req.originalUrl}`;
-    console.log(`[REDIRECT] IP to canonical: ${redirectUrl}`);
+    const redirectUrl = `https://www.getpromptfix.com${req.originalUrl}`;
     return res.redirect(301, redirectUrl);
   }
   
-  // Redirect www to non-www canonical URL
-  if (actualHost === 'www.getpromptfix.com' || actualHost.startsWith('www.')) {
-    const redirectUrl = `https://getpromptfix.com${req.originalUrl}`;
-    console.log(`[REDIRECT] WWW to canonical: ${redirectUrl}`);
+  // Redirect non-www to www canonical URL
+  if (actualHost === 'getpromptfix.com') {
+    const redirectUrl = `https://www.getpromptfix.com${req.originalUrl}`;
     return res.redirect(301, redirectUrl);
   }
   
@@ -116,6 +106,35 @@ app.use((req, res, next) => {
   });
 
   next();
+});
+
+// Serve sitemap.xml and robots.txt with correct Content-Type BEFORE Vite/static middleware
+const rootDir = process.cwd();
+
+app.get('/sitemap.xml', (_req, res) => {
+  const devPath = path.resolve(rootDir, 'client', 'public', 'sitemap.xml');
+  const prodPath = path.resolve(rootDir, 'dist', 'public', 'sitemap.xml');
+  const filePath = fs.existsSync(prodPath) ? prodPath : devPath;
+  if (fs.existsSync(filePath)) {
+    res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.sendFile(filePath);
+  } else {
+    res.status(404).send('Sitemap not found');
+  }
+});
+
+app.get('/robots.txt', (_req, res) => {
+  const devPath = path.resolve(rootDir, 'client', 'public', 'robots.txt');
+  const prodPath = path.resolve(rootDir, 'dist', 'public', 'robots.txt');
+  const filePath = fs.existsSync(prodPath) ? prodPath : devPath;
+  if (fs.existsSync(filePath)) {
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.sendFile(filePath);
+  } else {
+    res.status(404).send('Robots.txt not found');
+  }
 });
 
 (async () => {

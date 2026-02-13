@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://getpromptfix.com/sitemap.xml
+Sitemap: https://www.getpromptfix.com/sitemap.xml
