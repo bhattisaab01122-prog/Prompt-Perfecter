@@ -31,6 +31,13 @@ app.use((req, res, next) => {
     return res.redirect(301, redirectUrl);
   }
   
+  // Add canonical Link header for HTML page responses only (not API/static assets)
+  const isAssetOrApi = req.path.startsWith('/api') || req.path.match(/\.\w+$/);
+  if (!isAssetOrApi) {
+    const reqPath = req.path === '/' ? '/' : req.path.replace(/\/$/, '');
+    res.setHeader('Link', `<https://www.getpromptfix.com${reqPath}>; rel="canonical"`);
+  }
+  
   next();
 });
 
@@ -110,10 +117,16 @@ app.use((req, res, next) => {
 
 // Serve sitemap.xml and robots.txt with correct Content-Type BEFORE Vite/static middleware
 function findStaticFile(filename: string): string | null {
-  const candidates = [
-    path.resolve(process.cwd(), 'dist', 'public', filename),
-    path.resolve(process.cwd(), 'client', 'public', filename),
-  ];
+  const isProd = process.env.NODE_ENV === 'production';
+  const candidates = isProd
+    ? [
+        path.resolve(process.cwd(), 'dist', 'public', filename),
+        path.resolve(process.cwd(), 'client', 'public', filename),
+      ]
+    : [
+        path.resolve(process.cwd(), 'client', 'public', filename),
+        path.resolve(process.cwd(), 'dist', 'public', filename),
+      ];
   for (const candidate of candidates) {
     if (fs.existsSync(candidate)) return candidate;
   }
