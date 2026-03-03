@@ -19,8 +19,21 @@ app.use((req, res, next) => {
   
   const actualHost = (forwardedHost || host || hostname).toLowerCase().split(':')[0];
   const isIPAddress = /^(\d{1,3}\.){3}\d{1,3}$/.test(actualHost);
+
+  const isPrivateOrLoopback = (ip: string) => {
+    return (
+      ip === '127.0.0.1' ||
+      ip.startsWith('127.') ||
+      ip.startsWith('10.') ||
+      ip.startsWith('192.168.') ||
+      (ip.startsWith('172.') && (() => {
+        const second = parseInt(ip.split('.')[1], 10);
+        return second >= 16 && second <= 31;
+      })())
+    );
+  };
   
-  if (isIPAddress) {
+  if (isIPAddress && !isPrivateOrLoopback(actualHost)) {
     const redirectUrl = `https://www.getpromptfix.com${req.originalUrl}`;
     return res.redirect(301, redirectUrl);
   }
