@@ -16,30 +16,55 @@ export async function registerRoutes(
 
   app.post(api.optimize.generate.path, async (req, res) => {
     try {
-      const { prompt } = api.optimize.generate.input.parse(req.body);
+      const { prompt, tone, purpose, depth } = api.optimize.generate.input.parse(req.body);
+
+      const systemPrompt = `You are an expert prompt engineer. Rewrite and optimize the user's prompt based on these settings:
+- Tone: ${tone}
+- Purpose: ${purpose}
+- Output Depth: ${depth}
+
+Make the prompt clear, well-structured, and high-performing. Return ONLY the optimized prompt text, nothing else.`;
 
       const response = await openai.chat.completions.create({
         model: "gpt-4o",
         messages: [
-          { 
-            role: "system", 
-            content: "You are an expert prompt engineer. Your goal is to optimize the user's prompt to be clearer, more specific, and more effective for Large Language Models. Return only the optimized prompt." 
-          },
+          { role: "system", content: systemPrompt },
           { role: "user", content: prompt }
         ],
       });
 
       const optimizedPrompt = response.choices[0].message.content || "";
 
+      const scoreResponse = await openai.chat.completions.create({
+        model: "gpt-4o",
+        messages: [
+          {
+            role: "system",
+            content: `You are a prompt quality evaluator. Score the following optimized prompt on a scale of 0-100 based on:
+- Clarity (how clear and unambiguous it is)
+- Structure (how well-organized it is)
+- Specificity (how detailed and specific the instructions are)
+
+Return ONLY a single integer number between 0 and 100. Nothing else.`
+          },
+          { role: "user", content: optimizedPrompt }
+        ],
+      });
+
+      const scoreText = scoreResponse.choices[0].message.content || "75";
+      const promptScore = Math.min(100, Math.max(0, parseInt(scoreText.trim(), 10) || 75));
+
       const saved = await storage.createOptimization({
         originalPrompt: prompt,
         optimizedPrompt,
       });
 
-      res.json({ optimizedPrompt: saved.optimizedPrompt });
-    } catch (error) {
-      console.error("OpenAI Error:", error);
-      res.status(500).json({ message: "Failed to optimize prompt" });
+      res.json({ optimizedPrompt: saved.optimizedPrompt, promptScore });
+    } catch (error: any) {
+      const message = error?.message?.includes("API") 
+        ? "AI service is temporarily unavailable. Please try again in a moment."
+        : "Failed to optimize prompt. Please try again.";
+      res.status(500).json({ message });
     }
   });
 
@@ -48,12 +73,10 @@ export async function registerRoutes(
       const history = await storage.getOptimizations();
       res.json(history);
     } catch (error) {
-      console.error("History fetch error:", error);
       res.json([]);
     }
   });
 
-  // Seed data if empty
   const existing = await storage.getOptimizations();
   if (existing.length === 0) {
     await storage.createOptimization({

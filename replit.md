@@ -1,12 +1,19 @@
-# PromptFix - AI Prompt Optimizer
+# PromptFix - AI Prompt Engineering Platform
 
 ## Overview
 
-PromptFix is an AI-powered prompt optimization tool that helps users improve their prompts for Large Language Models like ChatGPT, Claude, and Midjourney. Users enter a prompt, the system sends it to OpenAI's GPT-4o model for optimization, and returns an improved version. The app maintains a history of all optimizations for reference.
+PromptFix (getpromptfix.com) is a modern SaaS-style AI prompt engineering platform that helps users optimize prompts for ChatGPT, Claude, Midjourney, and other AI tools. Users enter a prompt, select tone/purpose/depth settings, and the system sends it to OpenAI's GPT-4o model for optimization. Returns an improved prompt with a quality score (0-100). Maintains optimization history.
 
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+
+## SEO & Domain
+
+- **Primary Domain**: https://www.getpromptfix.com/ (www with trailing slash)
+- **Canonical**: Dual approach — dynamic client-side hook + server-side Link header
+- **Target Keywords**: "AI Prompt Fixer", "Prompt Engineering Tool", "Get Prompt Fix"
+- **Static SEO Content**: index.html contains full static content visible to crawlers without JS
 
 ## System Architecture
 
@@ -16,9 +23,19 @@ Preferred communication style: Simple, everyday language.
 - **State Management**: TanStack React Query for server state
 - **Styling**: Tailwind CSS with shadcn/ui component library
 - **Animations**: Framer Motion for smooth transitions
+- **Dark Mode**: next-themes with class strategy
 - **Build Tool**: Vite with hot module replacement
 
-The frontend follows a simple page-based structure with reusable components. The main page (`Home.tsx`) handles prompt input, optimization requests, and displays results. A separate `HistoryList` component shows past optimizations.
+The homepage features:
+- Gradient hero section with CTA
+- Prompt optimizer with Tone/Purpose/Depth dropdowns
+- Prompt Quality Score (0-100) with progress bar
+- Features section (3 cards)
+- How It Works (3 steps)
+- FAQ with collapsible accordion
+- SEO rich text section
+- Articles & Guides section
+- Word counter and 1000 character limit on input
 
 ### Backend Architecture
 - **Framework**: Express.js with TypeScript
@@ -27,8 +44,12 @@ The frontend follows a simple page-based structure with reusable components. The
 - **AI Integration**: OpenAI API (via Replit AI Integrations)
 
 Key endpoints:
-- `POST /api/optimize` - Sends prompt to GPT-4o for optimization
+- `POST /api/optimize` - Accepts `{prompt, tone, purpose, depth}`, returns `{optimizedPrompt, promptScore}`
 - `GET /api/history` - Retrieves all past optimizations
+
+The optimize endpoint makes two OpenAI calls:
+1. Optimize the prompt with tone/purpose/depth context
+2. Score the optimized prompt on clarity, structure, specificity (0-100)
 
 ### Data Storage
 - **Database**: PostgreSQL with Drizzle ORM
@@ -42,9 +63,12 @@ client/           # React frontend
   src/
     components/   # UI components (shadcn/ui + custom)
     hooks/        # React Query hooks for API calls
-    pages/        # Page components
+    pages/        # Page components (Home, Privacy, Contact, Articles)
     lib/          # Utilities and query client
+  index.html      # SEO static content + meta tags + JSON-LD schemas
+  public/         # Static assets (sitemap.xml, robots.txt, images)
 server/           # Express backend
+  index.ts        # Server setup with canonical headers & compression
   routes.ts       # API endpoint definitions
   storage.ts      # Database access layer
   db.ts           # Database connection
@@ -62,7 +86,7 @@ shared/           # Shared types and schemas
 ## External Dependencies
 
 ### AI Services
-- **OpenAI API**: Used for prompt optimization via GPT-4o model
+- **OpenAI API**: Used for prompt optimization and scoring via GPT-4o model
 - Environment variables: `AI_INTEGRATIONS_OPENAI_API_KEY`, `AI_INTEGRATIONS_OPENAI_BASE_URL`
 
 ### Database
@@ -70,14 +94,10 @@ shared/           # Shared types and schemas
 - Environment variable: `DATABASE_URL`
 - Connection pooling via `pg` package
 
-### Pre-built Integrations (in `server/replit_integrations/`)
-- **Batch Processing**: Utilities for rate-limited batch API calls
-- **Chat**: Ready-to-use chat conversation endpoints
-- **Image Generation**: OpenAI image generation endpoints
-
 ### Key NPM Packages
 - `drizzle-orm` + `drizzle-zod`: Type-safe database queries with validation
 - `@tanstack/react-query`: Server state management
 - `framer-motion`: Animation library
 - `date-fns`: Date formatting for history display
-- Radix UI primitives: Accessible component foundations
+- `next-themes`: Dark mode support
+- Radix UI primitives: Accessible component foundations (Select, Accordion, etc.)

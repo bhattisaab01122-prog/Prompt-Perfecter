@@ -1,7 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { api, type InsertOptimization } from "@shared/routes";
+import { api } from "@shared/routes";
 
-// GET /api/history
 export function useOptimizations() {
   return useQuery({
     queryKey: [api.optimize.history.path],
@@ -13,12 +12,11 @@ export function useOptimizations() {
   });
 }
 
-// POST /api/optimize
 export function useOptimizePrompt() {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: async (data: { prompt: string }) => {
+    mutationFn: async (data: { prompt: string; tone: string; purpose: string; depth: string }) => {
       const validated = api.optimize.generate.input.parse(data);
       
       const res = await fetch(api.optimize.generate.path, {
@@ -32,13 +30,12 @@ export function useOptimizePrompt() {
           const error = api.optimize.generate.responses[500].parse(await res.json());
           throw new Error(error.message);
         }
-        throw new Error("Failed to optimize prompt");
+        throw new Error("Something went wrong. Please try again.");
       }
 
       return api.optimize.generate.responses[200].parse(await res.json());
     },
     onSuccess: () => {
-      // Refresh history after a successful optimization
       queryClient.invalidateQueries({ queryKey: [api.optimize.history.path] });
     },
   });
