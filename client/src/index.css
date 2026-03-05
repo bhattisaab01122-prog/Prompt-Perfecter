@@ -71,6 +71,10 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground font-sans antialiased selection:bg-primary/20;
   }
@@ -87,6 +91,55 @@
   
   .glass-card {
     @apply bg-white/80 backdrop-blur-sm border border-white/20 shadow-lg;
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(221 83% 53%), hsl(239 84% 67%));
+  }
+
+  .dark .gradient-text {
+    background-image: linear-gradient(135deg, hsl(217 91% 60%), hsl(239 84% 67%));
+  }
+
+  .section-padding {
+    @apply py-16 px-4 sm:py-20 sm:px-6 lg:py-24 lg:px-8;
+  }
+
+  .animated-gradient-bg {
+    background: linear-gradient(
+      -45deg,
+      hsl(221 83% 53% / 0.08),
+      hsl(239 84% 67% / 0.08),
+      hsl(221 83% 53% / 0.04),
+      hsl(239 84% 67% / 0.04)
+    );
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+  }
+
+  .dark .animated-gradient-bg {
+    background: linear-gradient(
+      -45deg,
+      hsl(217 91% 60% / 0.1),
+      hsl(239 84% 67% / 0.1),
+      hsl(217 91% 60% / 0.05),
+      hsl(239 84% 67% / 0.05)
+    );
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
 

@@ -8,6 +8,7 @@ const KNOWN_ROUTES = [
   "/contact",
   "/articles/hallucinations",
   "/articles/midjourney",
+  "/terms",
 ];
 
 export function serveStatic(app: Express) {

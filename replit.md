@@ -27,15 +27,19 @@ Preferred communication style: Simple, everyday language.
 - **Build Tool**: Vite with hot module replacement
 
 The homepage features:
-- Gradient hero section with CTA
-- Prompt optimizer with Tone/Purpose/Depth dropdowns
+- Gradient hero section with "Try Prompt Fix Now" CTA and trust badges
+- Prompt optimizer with Tone/Purpose/Depth dropdowns and sidebar history
 - Prompt Quality Score (0-100) with progress bar
-- Features section (3 cards)
-- How It Works (3 steps)
-- FAQ with collapsible accordion
-- SEO rich text section
+- Before/After examples section (3 prompt transformation examples)
+- Features section "Why Use PromptFix?" (3 cards with icons)
+- How It Works (3 steps with visual flow)
+- Pricing section (Free plan + Pro plan coming soon)
+- FAQ with collapsible accordion (5 questions)
+- SEO rich text section with stats
 - Articles & Guides section
 - Word counter and 1000 character limit on input
+- Copy button for optimized prompts
+- Loading animation during AI optimization
 
 ### Backend Architecture
 - **Framework**: Express.js with TypeScript
@@ -63,12 +67,12 @@ client/           # React frontend
   src/
     components/   # UI components (shadcn/ui + custom)
     hooks/        # React Query hooks for API calls
-    pages/        # Page components (Home, Privacy, Contact, Articles)
+    pages/        # Page components (Home, Privacy, Contact, Terms, Articles)
     lib/          # Utilities and query client
   index.html      # SEO static content + meta tags + JSON-LD schemas
   public/         # Static assets (sitemap.xml, robots.txt, images)
 server/           # Express backend
-  index.ts        # Server setup with canonical headers & compression
+  index.ts        # Server setup with canonical headers, compression & IP redirect (excludes private/loopback IPs)
   routes.ts       # API endpoint definitions
   storage.ts      # Database access layer
   db.ts           # Database connection
