@@ -30,6 +30,16 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    cssMinify: true,
+    minify: 'esbuild',
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/framer-motion')) return 'vendor-motion';
+          if (id.includes('node_modules/@radix-ui')) return 'vendor-ui';
+        },
+      },
+    },
   },
   server: {
     fs: {

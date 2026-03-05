@@ -87,8 +87,18 @@ shared/           # Shared types and schemas
 
 ### Build System
 - Development: `npm run dev` runs TypeScript server with tsx
-- Production: `npm run build` uses esbuild for server, Vite for client
+- Production: `npm run build` uses esbuild for server, Vite for client (with CSS minification, code splitting for vendor-ui and vendor-motion chunks)
 - Database: `npm run db:push` syncs schema with Drizzle Kit
+
+### SEO & Performance
+- **Font loading**: Google Fonts loaded via preload + media="print" onload pattern (non-render-blocking); `@import` removed from CSS
+- **Critical CSS**: Inlined in `<style>` tag in index.html head (replaces external critical.css)
+- **Canonical URL**: `<link rel="canonical">` tag + server-side `Link` header + 301 redirect (non-www → www)
+- **Security headers**: X-Content-Type-Options, X-Frame-Options, Referrer-Policy, HSTS
+- **Caching**: Immutable cache (1yr) for hashed assets (JS/CSS/images/fonts); 1hr must-revalidate for HTML; 24hr for XML/JSON/TXT
+- **Compression**: gzip via express compression middleware
+- **Code splitting**: Vite manualChunks separates framer-motion and Radix UI into separate cached bundles
+- **Static SEO content**: index.html contains full static fallback content for crawlers (replaced by React on hydration)
 
 ## External Dependencies
 

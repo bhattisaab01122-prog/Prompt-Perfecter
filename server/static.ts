@@ -51,13 +51,20 @@ export function serveStatic(app: Express) {
     lastModified: true,
     setHeaders: (res, filePath) => {
       const ext = path.extname(filePath).toLowerCase();
-      
-      if (['.js', '.css', '.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.ico', '.woff', '.woff2', '.ttf'].includes(ext)) {
+
+      res.setHeader('Vary', 'Accept-Encoding');
+
+      if (['.js', '.css'].includes(ext)) {
         res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
-        res.setHeader('Expires', new Date(Date.now() + 31536000000).toUTCString());
+      } else if (['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.ico'].includes(ext)) {
+        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      } else if (['.woff', '.woff2', '.ttf', '.eot'].includes(ext)) {
+        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+        res.setHeader('Access-Control-Allow-Origin', '*');
       } else if (['.html'].includes(ext)) {
         res.setHeader('Cache-Control', 'public, max-age=3600, must-revalidate');
-        res.setHeader('Expires', new Date(Date.now() + 3600000).toUTCString());
+      } else if (['.json', '.xml', '.txt'].includes(ext)) {
+        res.setHeader('Cache-Control', 'public, max-age=86400');
       }
     }
   }));
@@ -70,7 +77,9 @@ export function serveStatic(app: Express) {
     if (!isKnownRoute) {
       res.status(404);
     }
-    
+
+    res.setHeader('Cache-Control', 'public, max-age=3600, must-revalidate');
+    res.setHeader('Vary', 'Accept-Encoding');
     res.sendFile(path.resolve(distPath, "index.html"));
   });
 }
