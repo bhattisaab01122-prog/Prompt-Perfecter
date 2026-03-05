@@ -26,20 +26,23 @@ Preferred communication style: Simple, everyday language.
 - **Dark Mode**: next-themes with class strategy
 - **Build Tool**: Vite with hot module replacement
 
+**Design philosophy**: Clean, minimal UI inspired by ChatGPT/Notion AI quality — tool-first, whitespace-driven, no gradient backgrounds or flashy animations. Sections separated by subtle top borders.
+
 The homepage features:
-- Gradient hero section with "Try Prompt Fix Now" CTA and trust badges
-- Prompt optimizer with Tone/Purpose/Depth dropdowns and sidebar history
-- Prompt Quality Score (0-100) with progress bar
-- Before/After examples section (3 prompt transformation examples)
-- Features section "Why Use PromptFix?" (3 cards with icons)
-- How It Works (3 steps with visual flow)
-- Pricing section (Free plan + Pro plan coming soon)
-- FAQ with collapsible accordion (5 questions)
-- SEO rich text section with stats
-- Articles & Guides section
+- Minimal hero with headline "Write better prompts. Get better results." and single CTA
+- Prompt optimizer (tool-first design): settings bar → input textarea → output panel with empty/loading/result states
+- Sidebar history panel (desktop only) with clickable past optimizations
+- Prompt Quality Score (0-100) with animated progress bar
+- Before/After examples section (3 prompt transformations)
+- Features section "Why use PromptFix?" (3 text-centered items with small icons)
+- How It Works (3 numbered steps, compact)
+- Pricing section (Free + Pro coming soon)
+- FAQ with accordion (5 questions)
+- SEO text section with 3 stats
+- Articles & Guides section (text-only cards)
 - Word counter and 1000 character limit on input
 - Copy button for optimized prompts
-- Loading animation during AI optimization
+- Clean loading spinner during optimization
 
 ### Backend Architecture
 - **Framework**: Express.js with TypeScript
