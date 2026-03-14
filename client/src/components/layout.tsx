@@ -104,7 +104,14 @@ export function Layout({ children }: { children: ReactNode }) {
             ))}
           </nav>
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-2">
+            <a
+              href="/#optimizer"
+              className="hidden md:inline-flex items-center justify-center text-[13px] font-medium h-8 px-4 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+              data-testid="button-get-started"
+            >
+              Get Started
+            </a>
             <ThemeToggle />
             <Button
               variant="ghost"

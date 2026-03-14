@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useToast } from "@/hooks/use-toast";
-import { Wand2, Copy, Check, ArrowRight, Sparkles, Zap, Target, ChevronRight, Crown, CheckCircle2 } from "lucide-react";
+import { Wand2, Copy, Check, ArrowRight, Sparkles, Zap, Target, ChevronRight, Crown, CheckCircle2, ArrowDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
@@ -81,55 +81,120 @@ export default function Home() {
 
   return (
     <Layout>
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 pt-16 pb-8 md:pt-24 md:pb-12" aria-label="Hero">
-        <div className="max-w-2xl mx-auto text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground text-balance leading-[1.15]"
-            data-testid="text-hero-heading"
-          >
-            Write better prompts.
-            <br />
-            <span className="text-primary">Get better results.</span>
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.1 }}
-            className="mt-4 text-base sm:text-lg text-muted-foreground max-w-lg mx-auto leading-relaxed"
-            data-testid="text-hero-description"
-          >
-            Paste any rough prompt and get an optimized, production-ready version in seconds. Free, no signup required.
-          </motion.p>
+      {/* Hero Section */}
+      <section className="relative overflow-hidden" aria-label="Hero">
+        {/* Animated background orbs */}
+        <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.2 }}
-            className="mt-6"
-          >
-            <Button
-              size="lg"
-              className="text-sm font-medium h-10 px-6"
-              onClick={() => document.getElementById("optimizer")?.scrollIntoView({ behavior: "smooth" })}
-              data-testid="button-cta-hero"
+            animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
+            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -top-24 -left-16 h-72 w-72 rounded-full bg-primary/8 dark:bg-primary/5 blur-3xl"
+          />
+          <motion.div
+            animate={{ x: [0, -25, 0], y: [0, 30, 0] }}
+            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+            className="absolute -top-8 right-0 h-96 w-96 rounded-full bg-indigo-500/6 dark:bg-indigo-500/4 blur-3xl"
+          />
+          <motion.div
+            animate={{ x: [0, 20, 0], y: [0, 15, 0] }}
+            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+            className="absolute bottom-0 left-1/2 -translate-x-1/2 h-48 w-[600px] rounded-full bg-primary/5 dark:bg-primary/3 blur-3xl"
+          />
+        </div>
+
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-20 pb-12 md:pt-28 md:pb-16">
+          <div className="max-w-3xl mx-auto text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
             >
-              Try it now
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </motion.div>
+              <span className="inline-flex items-center gap-1.5 text-xs font-medium text-primary bg-primary/8 dark:bg-primary/15 px-3 py-1 rounded-full mb-6 border border-primary/15">
+                <Sparkles className="h-3 w-3" />
+                Powered by GPT-4o
+              </span>
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.08 }}
+              className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground text-balance leading-[1.1] tracking-tight"
+              data-testid="text-hero-heading"
+            >
+              Transform Your AI Prompts
+              <br />
+              <span className="gradient-text">Into Powerful Results</span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.16 }}
+              className="mt-5 text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed"
+              data-testid="text-hero-description"
+            >
+              Paste any rough prompt and get an optimized, production-ready version in seconds. Free, no signup required.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.24 }}
+              className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3"
+            >
+              <Button
+                size="lg"
+                className="h-11 px-7 text-sm font-medium shadow-md shadow-primary/20"
+                onClick={() => document.getElementById("optimizer")?.scrollIntoView({ behavior: "smooth" })}
+                data-testid="button-cta-hero"
+              >
+                Try Prompt Fix Now
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+              <a
+                href="#examples"
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                data-testid="link-see-examples"
+              >
+                See examples
+                <ArrowDown className="h-3.5 w-3.5" />
+              </a>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="mt-10 flex items-center justify-center gap-8"
+              aria-label="Key stats"
+            >
+              {[
+                { value: "Free", label: "No signup needed" },
+                { value: "GPT-4o", label: "Latest AI model" },
+                { value: "Instant", label: "Results in seconds" },
+              ].map((stat) => (
+                <div key={stat.value} className="text-center" data-testid={`text-stat-${stat.value.toLowerCase()}`}>
+                  <p className="text-base font-bold text-foreground">{stat.value}</p>
+                  <p className="text-[11px] text-muted-foreground/70 mt-0.5">{stat.label}</p>
+                </div>
+              ))}
+            </motion.div>
+          </div>
         </div>
       </section>
 
+      {/* Optimizer Section */}
       <section id="optimizer" className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16" aria-label="AI Prompt Optimizer Tool">
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
           className="grid grid-cols-1 lg:grid-cols-12 gap-8"
         >
           <div className="lg:col-span-8 space-y-5">
+            {/* Settings Panel */}
             <div className="flex flex-wrap items-end gap-3" data-testid="settings-panel">
               <div className="flex-1 min-w-[120px]">
                 <label htmlFor="tone-select" className="text-xs font-medium text-muted-foreground mb-1.5 block">Tone</label>
@@ -175,10 +240,11 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="rounded-xl border border-border bg-card overflow-hidden" data-testid="card-input-prompt">
+            {/* Input Card */}
+            <div className="rounded-xl border border-border bg-card overflow-hidden shadow-sm" data-testid="card-input-prompt">
               <Textarea
-                placeholder="Describe what you want the AI to do..."
-                className="min-h-[160px] resize-none text-sm border-0 rounded-none bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-4 py-3"
+                placeholder="Describe what you want the AI to do. Be as rough or brief as you like — we'll handle the rest..."
+                className="min-h-[180px] resize-none text-sm border-0 rounded-none bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-4 py-4"
                 value={originalPrompt}
                 onChange={(e) => handlePromptChange(e.target.value)}
                 maxLength={CHAR_LIMIT}
@@ -213,6 +279,7 @@ export default function Home() {
               </div>
             </div>
 
+            {/* Output Panel */}
             <AnimatePresence mode="wait">
               {optimizeMutation.isPending ? (
                 <motion.div
@@ -220,7 +287,7 @@ export default function Home() {
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
-                  className="rounded-xl border border-border bg-card p-8"
+                  className="rounded-xl border border-border bg-card p-8 shadow-sm"
                   data-testid="optimizer-loading"
                 >
                   <div className="flex flex-col items-center justify-center text-center space-y-3">
@@ -236,11 +303,14 @@ export default function Home() {
                   key="result"
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="rounded-xl border border-primary/20 bg-card overflow-hidden"
+                  className="rounded-xl border border-primary/25 bg-card overflow-hidden shadow-sm"
                   data-testid="card-output-prompt"
                 >
-                  <div className="flex items-center justify-between px-4 py-2.5 border-b border-border/50 bg-primary/[0.03]">
-                    <span className="text-xs font-medium text-primary">Optimized Result</span>
+                  <div className="flex items-center justify-between px-4 py-2.5 border-b border-border/50 bg-primary/[0.04]">
+                    <div className="flex items-center gap-1.5">
+                      <Sparkles className="h-3.5 w-3.5 text-primary" />
+                      <span className="text-xs font-semibold text-primary">Optimized Result</span>
+                    </div>
                     <Button
                       variant="ghost"
                       size="sm"
@@ -249,17 +319,17 @@ export default function Home() {
                       data-testid="button-copy"
                     >
                       {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
-                      {copied ? "Copied" : "Copy"}
+                      {copied ? "Copied!" : "Copy"}
                     </Button>
                   </div>
-                  <div className="px-4 py-3">
+                  <div className="px-4 py-4">
                     <p className="text-sm leading-relaxed whitespace-pre-wrap text-foreground" data-testid="output-prompt">
                       {optimizedPrompt}
                     </p>
                   </div>
                   {promptScore !== null && (
                     <div className="px-4 py-3 border-t border-border/50 bg-muted/20">
-                      <div className="flex items-center justify-between mb-1.5">
+                      <div className="flex items-center justify-between mb-2">
                         <span className="text-xs text-muted-foreground">Quality Score</span>
                         <span className={cn(
                           "text-sm font-semibold",
@@ -284,7 +354,7 @@ export default function Home() {
                         />
                       </div>
                       <p className={cn(
-                        "text-[11px] mt-1",
+                        "text-[11px] mt-1.5",
                         promptScore >= 80 ? "text-green-600 dark:text-green-400" :
                         promptScore >= 60 ? "text-amber-600 dark:text-amber-400" :
                         "text-red-600 dark:text-red-400"
@@ -303,8 +373,8 @@ export default function Home() {
                   data-testid="card-output-empty"
                 >
                   <div className="flex flex-col items-center justify-center text-center space-y-2">
-                    <Wand2 className="h-6 w-6 text-muted-foreground/30" />
-                    <p className="text-xs text-muted-foreground" data-testid="text-output-empty">Your optimized prompt will appear here</p>
+                    <Wand2 className="h-6 w-6 text-muted-foreground/25" />
+                    <p className="text-xs text-muted-foreground/60" data-testid="text-output-empty">Your optimized prompt will appear here</p>
                   </div>
                 </motion.div>
               )}
@@ -336,48 +406,77 @@ function ExamplesSection() {
       before: "Write me a blog post about AI",
       after: "Write a 1,500-word blog post about the impact of artificial intelligence on small business operations in 2024. Include 3 real-world use cases, actionable tips for implementation, and a compelling introduction that hooks the reader. Use a professional yet approachable tone.",
       label: "Blog Writing",
+      icon: "✍️",
     },
     {
       before: "Make a picture of a city at night",
       after: "A breathtaking aerial photograph of a futuristic cyberpunk cityscape at night, neon-lit skyscrapers reflecting off rain-soaked streets, volumetric fog, cinematic lighting, ultra-detailed, 8K resolution, shot on Hasselblad --ar 16:9 --v 6",
       label: "AI Art",
+      icon: "🎨",
     },
     {
       before: "Help me write an email to my team",
       after: "Draft a concise, motivational email to a software engineering team of 12 announcing the successful completion of Q3 goals. Highlight 3 specific achievements, acknowledge individual contributors, outline Q4 priorities, and close with an encouraging call-to-action. Keep the tone warm but professional, under 300 words.",
       label: "Email",
+      icon: "📧",
     },
   ];
 
   return (
-    <section className="border-t border-border/50" aria-label="Before and After Examples">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 md:py-20">
-        <div className="text-center mb-10">
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground" data-testid="text-examples-heading">See the difference</h2>
-          <p className="text-muted-foreground mt-2 text-sm">Real prompt transformations that deliver better AI results.</p>
-        </div>
-        <div className="grid gap-5 md:grid-cols-3">
+    <section id="examples" className="border-t border-border/50" aria-label="Before and After Examples">
+      <div className="max-w-6xl mx-auto section-padding">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground" data-testid="text-examples-heading">
+            See the difference
+          </h2>
+          <p className="text-muted-foreground mt-2 text-sm max-w-md mx-auto">
+            Real prompt transformations that deliver dramatically better AI results.
+          </p>
+        </motion.div>
+
+        <div className="grid gap-6 md:grid-cols-3">
           {examples.map((example, idx) => (
-            <div key={idx} className="rounded-xl border border-border bg-card overflow-hidden" data-testid={`card-example-${idx}`}>
-              <div className="px-4 py-2.5 border-b border-border/50 bg-muted/30">
-                <span className="text-xs font-medium text-muted-foreground" data-testid={`badge-example-label-${idx}`}>{example.label}</span>
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: idx * 0.1 }}
+              className="rounded-xl border border-border bg-card overflow-hidden shadow-sm"
+              data-testid={`card-example-${idx}`}
+            >
+              <div className="flex items-center gap-2 px-4 py-3 border-b border-border/50 bg-muted/30">
+                <span className="text-base">{example.icon}</span>
+                <span className="text-xs font-semibold text-foreground" data-testid={`badge-example-label-${idx}`}>{example.label}</span>
               </div>
-              <div className="p-4 space-y-3">
+              <div className="p-4 space-y-4">
                 <div>
-                  <p className="text-[11px] font-medium text-muted-foreground/60 uppercase tracking-wider mb-1.5">Before</p>
-                  <p className="text-sm text-muted-foreground leading-relaxed" data-testid={`text-example-before-${idx}`}>
-                    {example.before}
+                  <p className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-widest mb-2">Before</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed italic" data-testid={`text-example-before-${idx}`}>
+                    "{example.before}"
                   </p>
                 </div>
-                <div className="border-t border-dashed border-border/50" />
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 h-px bg-border/50" />
+                  <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10">
+                    <ArrowDown className="h-3 w-3 text-primary" />
+                  </div>
+                  <div className="flex-1 h-px bg-border/50" />
+                </div>
                 <div>
-                  <p className="text-[11px] font-medium text-primary/70 uppercase tracking-wider mb-1.5">After</p>
+                  <p className="text-[10px] font-semibold text-primary/60 uppercase tracking-widest mb-2">After</p>
                   <p className="text-xs text-foreground font-mono leading-relaxed" data-testid={`text-example-after-${idx}`}>
                     {example.after}
                   </p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -391,35 +490,62 @@ function FeaturesSection() {
       icon: Sparkles,
       title: "Smart AI Optimization",
       description: "GPT-4o analyzes your prompt for clarity, structure, and specificity, then rewrites it for maximum performance.",
+      gradient: "from-blue-500/15 to-indigo-500/15",
+      iconColor: "text-blue-600 dark:text-blue-400",
     },
     {
       icon: Target,
       title: "Multi-Purpose Support",
       description: "Optimize for blog posts, emails, social media, coding, AI art, and more with purpose-specific tuning.",
+      gradient: "from-violet-500/15 to-purple-500/15",
+      iconColor: "text-violet-600 dark:text-violet-400",
     },
     {
       icon: Zap,
       title: "Instant Results",
       description: "Get production-ready prompts in seconds with a quality score so you know exactly how effective your prompt will be.",
+      gradient: "from-amber-500/15 to-orange-500/15",
+      iconColor: "text-amber-600 dark:text-amber-400",
     },
   ];
 
   return (
     <section id="features" className="border-t border-border/50 bg-muted/20 dark:bg-muted/5" aria-label="Features">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 md:py-20">
-        <div className="text-center mb-10">
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground" data-testid="text-features-heading">Why use PromptFix?</h2>
-          <p className="text-muted-foreground mt-2 text-sm">Everything you need to craft better AI prompts.</p>
-        </div>
+      <div className="max-w-6xl mx-auto section-padding">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground" data-testid="text-features-heading">
+            Why use PromptFix?
+          </h2>
+          <p className="text-muted-foreground mt-2 text-sm max-w-md mx-auto">
+            Everything you need to craft better AI prompts and get more from every interaction.
+          </p>
+        </motion.div>
+
         <div className="grid gap-6 md:grid-cols-3">
           {features.map((feature, idx) => (
-            <div key={idx} className="text-center" data-testid={`card-feature-${idx}`}>
-              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary mx-auto mb-4">
-                <feature.icon className="w-5 h-5" />
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: idx * 0.1 }}
+              className="rounded-xl border border-border bg-card p-6 shadow-sm"
+              data-testid={`card-feature-${idx}`}
+            >
+              <div className={cn("w-11 h-11 rounded-xl bg-gradient-to-br flex items-center justify-center mb-4", feature.gradient)}>
+                <feature.icon className={cn("w-5 h-5", feature.iconColor)} />
               </div>
-              <h3 className="text-sm font-semibold text-foreground mb-1.5" data-testid={`text-feature-title-${idx}`}>{feature.title}</h3>
-              <p className="text-xs text-muted-foreground leading-relaxed max-w-[260px] mx-auto">{feature.description}</p>
-            </div>
+              <h3 className="text-sm font-semibold text-foreground mb-2" data-testid={`text-feature-title-${idx}`}>
+                {feature.title}
+              </h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">{feature.description}</p>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -429,28 +555,71 @@ function FeaturesSection() {
 
 function HowItWorksSection() {
   const steps = [
-    { num: "1", title: "Paste your prompt", description: "Enter your rough idea or draft into the input." },
-    { num: "2", title: "AI optimizes it", description: "Select tone, purpose, and depth. Our AI rewrites it." },
-    { num: "3", title: "Copy and use", description: "Get a scored, production-ready prompt for any AI tool." },
+    {
+      num: "1",
+      title: "Paste your prompt",
+      description: "Enter your rough idea or draft into the input box. Any length, any topic.",
+      icon: "📝",
+    },
+    {
+      num: "2",
+      title: "AI optimizes it",
+      description: "Select tone, purpose, and depth. GPT-4o rewrites and structures your prompt.",
+      icon: "⚡",
+    },
+    {
+      num: "3",
+      title: "Copy and use",
+      description: "Get a scored, production-ready prompt for ChatGPT, Claude, Midjourney, and more.",
+      icon: "🚀",
+    },
   ];
 
   return (
     <section id="how-it-works" className="border-t border-border/50" aria-label="How It Works">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 md:py-20">
-        <div className="text-center mb-10">
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground" data-testid="text-how-it-works-heading">How it works</h2>
-          <p className="text-muted-foreground mt-2 text-sm">Three steps to a better prompt.</p>
-        </div>
-        <div className="grid gap-8 md:grid-cols-3 max-w-3xl mx-auto">
-          {steps.map((step, idx) => (
-            <div key={idx} className="text-center" data-testid={`step-${idx}`}>
-              <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-semibold mx-auto mb-3">
-                {step.num}
-              </div>
-              <h3 className="text-sm font-semibold text-foreground mb-1" data-testid={`text-step-title-${idx}`}>{step.title}</h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">{step.description}</p>
-            </div>
-          ))}
+      <div className="max-w-6xl mx-auto section-padding">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground" data-testid="text-how-it-works-heading">
+            How it works
+          </h2>
+          <p className="text-muted-foreground mt-2 text-sm">Three simple steps to a better prompt.</p>
+        </motion.div>
+
+        <div className="max-w-3xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
+            {steps.map((step, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: idx * 0.15 }}
+                className="relative flex flex-col items-center text-center px-6 py-2"
+                data-testid={`step-${idx}`}
+              >
+                {/* Connecting line on desktop */}
+                {idx < steps.length - 1 && (
+                  <div className="hidden md:block absolute top-8 left-[calc(50%+2rem)] right-0 h-px border-t-2 border-dashed border-border/50" aria-hidden="true" />
+                )}
+                <div className="relative z-10 w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center text-2xl mb-4">
+                  {step.icon}
+                  <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center">
+                    {step.num}
+                  </span>
+                </div>
+                <h3 className="text-sm font-semibold text-foreground mb-1.5" data-testid={`text-step-title-${idx}`}>
+                  {step.title}
+                </h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">{step.description}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -477,19 +646,42 @@ function PricingSection() {
 
   return (
     <section id="pricing" className="border-t border-border/50 bg-muted/20 dark:bg-muted/5" aria-label="Pricing">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 md:py-20">
-        <div className="text-center mb-10">
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground" data-testid="text-pricing-heading">Simple pricing</h2>
+      <div className="max-w-6xl mx-auto section-padding">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground" data-testid="text-pricing-heading">
+            Simple pricing
+          </h2>
           <p className="text-muted-foreground mt-2 text-sm">Start free. Upgrade when you need more.</p>
-        </div>
-        <div className="grid gap-5 md:grid-cols-2 max-w-2xl mx-auto">
-          <div className="rounded-xl border border-border bg-card p-6" data-testid="card-pricing-free">
-            <div className="mb-5">
-              <h3 className="text-base font-semibold text-foreground">Free</h3>
-              <div className="mt-2">
-                <span className="text-3xl font-bold text-foreground">$0</span>
-                <span className="text-sm text-muted-foreground ml-1">/month</span>
+        </motion.div>
+
+        <div className="grid gap-6 md:grid-cols-2 max-w-2xl mx-auto">
+          {/* Free Plan */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4 }}
+            className="rounded-xl border-2 border-primary bg-card p-6 shadow-md shadow-primary/10 relative"
+            data-testid="card-pricing-free"
+          >
+            <div className="absolute -top-3 left-6">
+              <span className="text-[10px] font-semibold text-primary-foreground bg-primary px-2.5 py-0.5 rounded-full" data-testid="badge-popular">
+                Most Popular
+              </span>
+            </div>
+            <div className="mb-5 pt-1">
+              <h3 className="text-base font-bold text-foreground">Free</h3>
+              <div className="mt-2 flex items-baseline gap-1">
+                <span className="text-4xl font-bold text-foreground">$0</span>
+                <span className="text-sm text-muted-foreground">/month</span>
               </div>
+              <p className="text-xs text-muted-foreground mt-1">No credit card required</p>
             </div>
             <ul className="space-y-2.5 mb-6">
               {freeFeatures.map((feature, idx) => (
@@ -500,29 +692,38 @@ function PricingSection() {
               ))}
             </ul>
             <Button
-              className="w-full h-9 text-xs"
+              className="w-full h-10 text-sm font-medium"
               onClick={() => document.getElementById("optimizer")?.scrollIntoView({ behavior: "smooth" })}
               data-testid="button-pricing-free"
             >
-              Get Started
+              Get Started Free
             </Button>
-          </div>
+          </motion.div>
 
-          <div className="rounded-xl border border-border bg-card p-6 relative" data-testid="card-pricing-pro">
+          {/* Pro Plan */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+            className="rounded-xl border border-border bg-card p-6 relative"
+            data-testid="card-pricing-pro"
+          >
             <div className="absolute top-4 right-4">
-              <span className="text-[10px] font-medium text-muted-foreground bg-muted px-2 py-0.5 rounded-full" data-testid="badge-coming-soon">
+              <span className="text-[10px] font-medium text-muted-foreground bg-muted px-2 py-0.5 rounded-full border border-border/50" data-testid="badge-coming-soon">
                 Coming Soon
               </span>
             </div>
             <div className="mb-5">
-              <h3 className="text-base font-semibold text-foreground flex items-center gap-1.5">
+              <h3 className="text-base font-bold text-foreground flex items-center gap-1.5">
                 Pro
-                <Crown className="w-3.5 h-3.5 text-amber-500" />
+                <Crown className="w-4 h-4 text-amber-500" />
               </h3>
-              <div className="mt-2">
-                <span className="text-3xl font-bold text-foreground">$9</span>
-                <span className="text-sm text-muted-foreground ml-1">/month</span>
+              <div className="mt-2 flex items-baseline gap-1">
+                <span className="text-4xl font-bold text-foreground">$9</span>
+                <span className="text-sm text-muted-foreground">/month</span>
               </div>
+              <p className="text-xs text-muted-foreground mt-1">Billed monthly</p>
             </div>
             <ul className="space-y-2.5 mb-6">
               {proFeatures.map((feature, idx) => (
@@ -533,14 +734,14 @@ function PricingSection() {
               ))}
             </ul>
             <Button
-              className="w-full h-9 text-xs"
+              className="w-full h-10 text-sm font-medium"
               variant="secondary"
               disabled
               data-testid="button-pricing-pro"
             >
               Coming Soon
             </Button>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
@@ -559,7 +760,7 @@ function FAQSection() {
     },
     {
       question: "How does the quality score work?",
-      answer: "After optimization, our AI evaluates the prompt on clarity, structure, and specificity on a scale of 0-100. A higher score means the prompt is more likely to produce accurate, detailed, and useful AI responses.",
+      answer: "After optimization, our AI evaluates the prompt on clarity, structure, and specificity on a scale of 0–100. A higher score means the prompt is more likely to produce accurate, detailed, and useful AI responses.",
     },
     {
       question: "Is my data private?",
@@ -567,21 +768,31 @@ function FAQSection() {
     },
     {
       question: "What will the Pro plan include?",
-      answer: "The Pro plan will include bulk prompt optimization, custom templates, advanced analytics, priority processing, API access, and team collaboration features.",
+      answer: "The Pro plan will include bulk prompt optimization, custom templates, advanced analytics, priority processing, API access, and team collaboration features. Sign up for our newsletter to be notified when it launches.",
     },
   ];
 
   return (
     <section id="faq" className="border-t border-border/50" aria-label="FAQ">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 md:py-20">
-        <div className="text-center mb-10">
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground" data-testid="text-faq-heading">Frequently asked questions</h2>
-        </div>
+      <div className="max-w-6xl mx-auto section-padding">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground" data-testid="text-faq-heading">
+            Frequently asked questions
+          </h2>
+          <p className="text-muted-foreground mt-2 text-sm">Everything you need to know about PromptFix.</p>
+        </motion.div>
+
         <div className="max-w-xl mx-auto">
           <Accordion type="single" collapsible className="w-full">
             {faqs.map((faq, idx) => (
               <AccordionItem key={idx} value={`faq-${idx}`} className="border-border/50" data-testid={`faq-item-${idx}`}>
-                <AccordionTrigger className="text-left text-sm font-medium hover:no-underline py-3" data-testid={`button-faq-${idx}`}>
+                <AccordionTrigger className="text-left text-sm font-medium hover:no-underline py-4" data-testid={`button-faq-${idx}`}>
                   {faq.question}
                 </AccordionTrigger>
                 <AccordionContent className="text-sm text-muted-foreground leading-relaxed pb-4">
@@ -599,14 +810,15 @@ function FAQSection() {
 function SEOSection() {
   return (
     <section className="border-t border-border/50 bg-muted/20 dark:bg-muted/5" aria-label="About Prompt Engineering">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 md:py-20">
+      <div className="max-w-6xl mx-auto section-padding">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground text-center mb-6" data-testid="text-seo-heading">
             Why prompt engineering matters
           </h2>
-          <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+          <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
             <p>
-              The difference between a mediocre AI response and an exceptional one comes down to how you phrase your request. <strong className="text-foreground font-medium">Prompt engineering</strong> is the art of crafting inputs that guide AI models to produce exactly what you need.
+              The difference between a mediocre AI response and an exceptional one comes down to how you phrase your request.{" "}
+              <strong className="text-foreground font-medium">Prompt engineering</strong> is the art of crafting inputs that guide AI models to produce exactly what you need.
             </p>
             <p>
               PromptFix is your <strong className="text-foreground font-medium">AI prompt optimizer</strong>. Whether you're writing emails, generating content, coding, or creating AI art, our tool transforms rough ideas into structured prompts optimized for clarity, context, and precision.
@@ -617,16 +829,16 @@ function SEOSection() {
           </div>
           <div className="grid grid-cols-3 gap-6 mt-10 text-center">
             <div data-testid="text-stat-responses">
-              <p className="text-2xl font-bold text-foreground">10x</p>
-              <p className="text-xs text-muted-foreground mt-0.5">Better responses</p>
+              <p className="text-2xl font-bold gradient-text">10x</p>
+              <p className="text-xs text-muted-foreground mt-1">Better responses</p>
             </div>
             <div data-testid="text-stat-cost">
-              <p className="text-2xl font-bold text-foreground">Free</p>
-              <p className="text-xs text-muted-foreground mt-0.5">No signup</p>
+              <p className="text-2xl font-bold gradient-text">Free</p>
+              <p className="text-xs text-muted-foreground mt-1">No signup ever</p>
             </div>
             <div data-testid="text-stat-speed">
-              <p className="text-2xl font-bold text-foreground">Instant</p>
-              <p className="text-xs text-muted-foreground mt-0.5">Results in seconds</p>
+              <p className="text-2xl font-bold gradient-text">Instant</p>
+              <p className="text-xs text-muted-foreground mt-1">Results in seconds</p>
             </div>
           </div>
         </div>
@@ -656,13 +868,25 @@ function ArticlesSection() {
 
   return (
     <section className="border-t border-border/50" aria-label="Articles">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 md:py-20">
-        <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-8" data-testid="text-blog-heading">Articles & Guides</h2>
-        <div className="grid gap-5 md:grid-cols-3">
+      <div className="max-w-6xl mx-auto section-padding">
+        <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-10" data-testid="text-blog-heading">
+          Articles & Guides
+        </h2>
+        <div className="grid gap-6 md:grid-cols-3">
           {articles.map((article, idx) => (
-            <div key={idx} className="group" data-testid={`card-article-${idx}`}>
-              <h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors mb-1.5">{article.title}</h3>
-              <p className="text-xs text-muted-foreground leading-relaxed mb-2">{article.summary}</p>
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: idx * 0.1 }}
+              className="group border-t border-border/50 pt-5"
+              data-testid={`card-article-${idx}`}
+            >
+              <h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors mb-2 leading-snug">
+                {article.title}
+              </h3>
+              <p className="text-xs text-muted-foreground leading-relaxed mb-3">{article.summary}</p>
               <Link
                 href={article.url}
                 className="text-xs font-medium text-primary hover:text-primary/80 transition-colors inline-flex items-center gap-1"
@@ -671,7 +895,7 @@ function ArticlesSection() {
                 Read more
                 <ChevronRight className="w-3 h-3" />
               </Link>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
