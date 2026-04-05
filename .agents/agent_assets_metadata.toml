@@ -1,0 +1,14 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "op4xMBu_cjWRYt3IR3k_q"
+uri = "file://promptfix-hostinger.tar.gz"
+type = "unspecified"
+title = "PromptFix — Hostinger Deployment Package"
+
+[[outputs]]
+id = "oDeugjzx5ydAm4sQ2mp1G"
+uri = "file://README-DEPLOY.md"
+type = "text"
+title = "Hostinger Deployment Guide (README)"
