@@ -20,7 +20,7 @@ promptfix-hostinger.zip
 
 - **Node.js** 18 or higher
 - **PostgreSQL** database (Hostinger offers this, or use [Neon.tech](https://neon.tech) free tier)
-- **OpenAI API key** (get one at [platform.openai.com](https://platform.openai.com/api-keys))
+- **Google Gemini API key** (get one free at [aistudio.google.com](https://aistudio.google.com/app/apikey))
 
 ---
 
@@ -61,8 +61,7 @@ In your Hostinger file manager, create a file named `.env` in the app root:
 
 ```env
 DATABASE_URL=postgresql://your_user:your_password@your_host:5432/your_db
-AI_INTEGRATIONS_OPENAI_API_KEY=sk-your-openai-api-key
-AI_INTEGRATIONS_OPENAI_BASE_URL=https://api.openai.com/v1
+GEMINI_API_KEY=your-gemini-api-key-here
 NODE_ENV=production
 PORT=3000
 ```
@@ -105,8 +104,7 @@ Your app will be available at your domain.
 | Variable | Required | Description |
 |---|---|---|
 | `DATABASE_URL` | ✅ Yes | PostgreSQL connection string |
-| `AI_INTEGRATIONS_OPENAI_API_KEY` | ✅ Yes | Your OpenAI API key |
-| `AI_INTEGRATIONS_OPENAI_BASE_URL` | Optional | Defaults to `https://api.openai.com/v1` |
+| `GEMINI_API_KEY` | ✅ Yes | Your Google Gemini API key (free at aistudio.google.com) |
 | `PORT` | Optional | Server port (default: 3000) |
 | `NODE_ENV` | ✅ Yes | Must be `production` |
 
@@ -122,9 +120,9 @@ Your app will be available at your domain.
 **"DATABASE_URL must be set" error:**
 - Your `.env` file is missing or not being read — confirm it's in the same folder as `dist/`
 
-**OpenAI errors / optimization not working:**
-- Verify your `AI_INTEGRATIONS_OPENAI_API_KEY` is valid and has credits
-- Test it at [platform.openai.com](https://platform.openai.com)
+**Gemini errors / optimization not working:**
+- Verify your `GEMINI_API_KEY` is valid at [aistudio.google.com](https://aistudio.google.com/app/apikey)
+- The free tier has generous limits — no billing required
 
 **Port conflict:**
 - Change `PORT` in your `.env` to match what Hostinger assigns (often `3000` or `8080`)

@@ -2,7 +2,7 @@
 
 ## Overview
 
-PromptFix (getpromptfix.com) is a modern SaaS-style AI prompt engineering platform that helps users optimize prompts for ChatGPT, Claude, Midjourney, and other AI tools. Users enter a prompt, select tone/purpose/depth settings, and the system sends it to OpenAI's GPT-4o model for optimization. Returns an improved prompt with a quality score (0-100). Maintains optimization history.
+PromptFix (getpromptfix.com) is a modern SaaS-style AI prompt engineering platform that helps users optimize prompts for ChatGPT, Claude, Midjourney, and other AI tools. Users enter a prompt, select tone/purpose/depth settings, and the system sends it to Google's Gemini model for optimization. Returns an improved prompt with a quality score (0-100). Maintains optimization history.
 
 ## User Preferences
 
@@ -48,13 +48,13 @@ The homepage features:
 - **Framework**: Express.js with TypeScript
 - **API Pattern**: RESTful endpoints defined in `shared/routes.ts` with Zod validation
 - **Database ORM**: Drizzle ORM with PostgreSQL
-- **AI Integration**: OpenAI API (via Replit AI Integrations)
+- **AI Integration**: Google Gemini API (via direct fetch, no SDK — uses `GEMINI_API_KEY` env var)
 
 Key endpoints:
 - `POST /api/optimize` - Accepts `{prompt, tone, purpose, depth}`, returns `{optimizedPrompt, promptScore}`
 - `GET /api/history` - Retrieves all past optimizations
 
-The optimize endpoint makes two OpenAI calls:
+The optimize endpoint makes two Gemini API calls (via native fetch, model: gemini-1.5-flash):
 1. Optimize the prompt with tone/purpose/depth context
 2. Score the optimized prompt on clarity, structure, specificity (0-100)
 
@@ -103,8 +103,9 @@ shared/           # Shared types and schemas
 ## External Dependencies
 
 ### AI Services
-- **OpenAI API**: Used for prompt optimization and scoring via GPT-4o model
-- Environment variables: `AI_INTEGRATIONS_OPENAI_API_KEY`, `AI_INTEGRATIONS_OPENAI_BASE_URL`
+- **Google Gemini API**: Used for prompt optimization and scoring via `gemini-1.5-flash` model
+- Called via native `fetch` — no SDK dependency
+- Environment variable: `GEMINI_API_KEY` (get free key at aistudio.google.com)
 
 ### Database
 - **PostgreSQL**: Primary data store

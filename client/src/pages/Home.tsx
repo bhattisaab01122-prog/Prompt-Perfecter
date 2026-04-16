@@ -111,7 +111,7 @@ export default function Home() {
             >
               <span className="inline-flex items-center gap-1.5 text-xs font-medium text-primary bg-primary/8 dark:bg-primary/15 px-3 py-1 rounded-full mb-6 border border-primary/15">
                 <Sparkles className="h-3 w-3" />
-                Powered by GPT-4o
+                Powered by Gemini
               </span>
             </motion.div>
 
@@ -171,7 +171,7 @@ export default function Home() {
             >
               {[
                 { value: "Free", label: "No signup needed" },
-                { value: "GPT-4o", label: "Latest AI model" },
+                { value: "Gemini", label: "Latest AI model" },
                 { value: "Instant", label: "Results in seconds" },
               ].map((stat) => (
                 <div key={stat.value} className="text-center" data-testid={`text-stat-${stat.value.toLowerCase()}`}>
@@ -489,7 +489,7 @@ function FeaturesSection() {
     {
       icon: Sparkles,
       title: "Smart AI Optimization",
-      description: "GPT-4o analyzes your prompt for clarity, structure, and specificity, then rewrites it for maximum performance.",
+      description: "Google Gemini analyzes your prompt for clarity, structure, and specificity, then rewrites it for maximum performance.",
       gradient: "from-blue-500/15 to-indigo-500/15",
       iconColor: "text-blue-600 dark:text-blue-400",
     },
@@ -564,7 +564,7 @@ function HowItWorksSection() {
     {
       num: "2",
       title: "AI optimizes it",
-      description: "Select tone, purpose, and depth. GPT-4o rewrites and structures your prompt.",
+      description: "Select tone, purpose, and depth. Gemini AI rewrites and structures your prompt.",
       icon: "⚡",
     },
     {
@@ -824,7 +824,7 @@ function SEOSection() {
               PromptFix is your <strong className="text-foreground font-medium">AI prompt optimizer</strong>. Whether you're writing emails, generating content, coding, or creating AI art, our tool transforms rough ideas into structured prompts optimized for clarity, context, and precision.
             </p>
             <p>
-              Powered by OpenAI's GPT-4o model with customizable tone, purpose, and depth settings, every prompt is tailored to your specific use case.
+              Powered by Google's Gemini model with customizable tone, purpose, and depth settings, every prompt is tailored to your specific use case.
             </p>
           </div>
           <div className="grid grid-cols-3 gap-6 mt-10 text-center">

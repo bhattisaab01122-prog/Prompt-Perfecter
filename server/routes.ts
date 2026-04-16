@@ -2,57 +2,70 @@ import type { Express } from "express";
 import type { Server } from "http";
 import { storage } from "./storage";
 import { api } from "@shared/routes";
-import { z } from "zod";
-import OpenAI from "openai";
+
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
+
+async function callGemini(systemInstruction: string, userMessage: string): Promise<string> {
+  if (!GEMINI_API_KEY) {
+    throw new Error("GEMINI_API_KEY is not set");
+  }
+
+  const response = await fetch(`${GEMINI_BASE_URL}?key=${GEMINI_API_KEY}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      system_instruction: {
+        parts: [{ text: systemInstruction }],
+      },
+      contents: [
+        {
+          parts: [{ text: userMessage }],
+        },
+      ],
+    }),
+  });
+
+  if (!response.ok) {
+    const err = await response.text();
+    throw new Error(`Gemini API error ${response.status}: ${err}`);
+  }
+
+  const data = await response.json() as {
+    candidates?: { content?: { parts?: { text?: string }[] } }[];
+  };
+
+  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+  return text.trim();
+}
 
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
-  const openai = new OpenAI({ 
-    apiKey: process.env.AI_INTEGRATIONS_OPENAI_API_KEY,
-    baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
-  });
 
   app.post(api.optimize.generate.path, async (req, res) => {
     try {
       const { prompt, tone, purpose, depth } = api.optimize.generate.input.parse(req.body);
 
-      const systemPrompt = `You are an expert prompt engineer. Rewrite and optimize the user's prompt based on these settings:
+      const optimizeInstruction = `You are an expert prompt engineer. Rewrite and optimize the user's prompt based on these settings:
 - Tone: ${tone}
 - Purpose: ${purpose}
 - Output Depth: ${depth}
 
 Make the prompt clear, well-structured, and high-performing. Return ONLY the optimized prompt text, nothing else.`;
 
-      const response = await openai.chat.completions.create({
-        model: "gpt-4o",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: prompt }
-        ],
-      });
+      const optimizedPrompt = await callGemini(optimizeInstruction, prompt);
 
-      const optimizedPrompt = response.choices[0].message.content || "";
-
-      const scoreResponse = await openai.chat.completions.create({
-        model: "gpt-4o",
-        messages: [
-          {
-            role: "system",
-            content: `You are a prompt quality evaluator. Score the following optimized prompt on a scale of 0-100 based on:
+      const scoreInstruction = `You are a prompt quality evaluator. Score the following optimized prompt on a scale of 0-100 based on:
 - Clarity (how clear and unambiguous it is)
 - Structure (how well-organized it is)
 - Specificity (how detailed and specific the instructions are)
 
-Return ONLY a single integer number between 0 and 100. Nothing else.`
-          },
-          { role: "user", content: optimizedPrompt }
-        ],
-      });
+Return ONLY a single integer number between 0 and 100. Nothing else.`;
 
-      const scoreText = scoreResponse.choices[0].message.content || "75";
-      const promptScore = Math.min(100, Math.max(0, parseInt(scoreText.trim(), 10) || 75));
+      const scoreText = await callGemini(scoreInstruction, optimizedPrompt);
+      const promptScore = Math.min(100, Math.max(0, parseInt(scoreText, 10) || 75));
 
       const saved = await storage.createOptimization({
         originalPrompt: prompt,
@@ -61,8 +74,8 @@ Return ONLY a single integer number between 0 and 100. Nothing else.`
 
       res.json({ optimizedPrompt: saved.optimizedPrompt, promptScore });
     } catch (error: any) {
-      const message = error?.message?.includes("API") 
-        ? "AI service is temporarily unavailable. Please try again in a moment."
+      const message = error?.message?.includes("GEMINI_API_KEY")
+        ? "Gemini API key is not configured. Please set GEMINI_API_KEY."
         : "Failed to optimize prompt. Please try again.";
       res.status(500).json({ message });
     }

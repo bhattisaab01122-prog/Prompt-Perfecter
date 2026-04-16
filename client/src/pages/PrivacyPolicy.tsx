@@ -20,7 +20,7 @@ export default function PrivacyPolicy() {
             </p>
             <h3 className="text-lg font-semibold text-foreground">2. How We Use Information</h3>
             <p>
-              Your prompts are processed by OpenAI APIs to generate optimized versions. We store this data in your local session history for your convenience.
+              Your prompts are processed by Google Gemini APIs to generate optimized versions. We store this data in your local session history for your convenience.
             </p>
             <h3 className="text-lg font-semibold text-foreground">3. Data Security</h3>
             <p>

@@ -246,13 +246,13 @@ export function Layout({ children }: { children: ReactNode }) {
               &copy; {new Date().getFullYear()} PromptFix. All rights reserved.
             </p>
             <a
-              href="https://openai.com"
+              href="https://deepmind.google/technologies/gemini/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-[11px] text-muted-foreground/60 hover:text-foreground transition-colors"
               data-testid="link-powered-by"
             >
-              Powered by OpenAI
+              Powered by Google Gemini
             </a>
           </div>
         </div>
