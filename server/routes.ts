@@ -3,26 +3,27 @@ import type { Server } from "http";
 import { storage } from "./storage";
 import { api } from "@shared/routes";
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
+const GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
 
 async function callGemini(systemInstruction: string, userMessage: string): Promise<string> {
-  if (!GEMINI_API_KEY) {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
     throw new Error("GEMINI_API_KEY is not set");
   }
 
-  const response = await fetch(`${GEMINI_BASE_URL}?key=${GEMINI_API_KEY}`, {
+  const response = await fetch(`${GEMINI_BASE_URL}?key=${apiKey}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      system_instruction: {
-        parts: [{ text: systemInstruction }],
-      },
       contents: [
         {
-          parts: [{ text: userMessage }],
+          role: "user",
+          parts: [{ text: `${systemInstruction}\n\n${userMessage}` }],
         },
       ],
+      generationConfig: {
+        temperature: 0.7,
+      },
     }),
   });
 
@@ -74,9 +75,15 @@ Return ONLY a single integer number between 0 and 100. Nothing else.`;
 
       res.json({ optimizedPrompt: saved.optimizedPrompt, promptScore });
     } catch (error: any) {
-      const message = error?.message?.includes("GEMINI_API_KEY")
-        ? "Gemini API key is not configured. Please set GEMINI_API_KEY."
-        : "Failed to optimize prompt. Please try again.";
+      console.error("[optimize] Gemini error:", error?.message || error);
+      const msg: string = error?.message || "";
+      const message = msg.includes("GEMINI_API_KEY")
+        ? "Gemini API key is not configured. Please set the GEMINI_API_KEY secret."
+        : msg.includes("429")
+        ? "Too many requests — please wait a moment and try again."
+        : msg.includes("401") || msg.includes("403")
+        ? "Invalid Gemini API key. Please check your GEMINI_API_KEY secret."
+        : "Optimization failed. Please try again.";
       res.status(500).json({ message });
     }
   });
