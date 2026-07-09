@@ -5,7 +5,7 @@ import { api } from "@shared/routes";
 
 const GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
 
-async function callGemini(systemInstruction: string, userMessage: string): Promise<string> {
+async function callGemini(prompt: string): Promise<string> {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     throw new Error("GEMINI_API_KEY is not set");
@@ -18,7 +18,7 @@ async function callGemini(systemInstruction: string, userMessage: string): Promi
       contents: [
         {
           role: "user",
-          parts: [{ text: `${systemInstruction}\n\n${userMessage}` }],
+          parts: [{ text: prompt }],
         },
       ],
       generationConfig: {
@@ -28,8 +28,35 @@ async function callGemini(systemInstruction: string, userMessage: string): Promi
   });
 
   if (!response.ok) {
-    const err = await response.text();
-    throw new Error(`Gemini API error ${response.status}: ${err}`);
+    const body = await response.text();
+
+    // Log full 429 details including headers
+    if (response.status === 429) {
+      const retryAfter = response.headers.get("Retry-After") || response.headers.get("retry-after");
+      const quotaType =
+        response.headers.get("x-ratelimit-limit-requests") ||
+        response.headers.get("X-RateLimit-Limit-Requests");
+      const remaining =
+        response.headers.get("x-ratelimit-remaining-requests") ||
+        response.headers.get("X-RateLimit-Remaining-Requests");
+
+      console.error("[Gemini 429] Rate limit hit");
+      console.error("[Gemini 429] Retry-After:", retryAfter ?? "not provided");
+      console.error("[Gemini 429] Quota limit:", quotaType ?? "not provided");
+      console.error("[Gemini 429] Remaining quota:", remaining ?? "not provided");
+      console.error("[Gemini 429] Response body:", body);
+
+      // Parse quota type from body if available
+      try {
+        const parsed = JSON.parse(body);
+        const details = parsed?.error?.details;
+        if (details) {
+          console.error("[Gemini 429] Error details:", JSON.stringify(details, null, 2));
+        }
+      } catch {}
+    }
+
+    throw new Error(`Gemini API error ${response.status}: ${body}`);
   }
 
   const data = await response.json() as {
@@ -49,24 +76,43 @@ export async function registerRoutes(
     try {
       const { prompt, tone, purpose, depth } = api.optimize.generate.input.parse(req.body);
 
-      const optimizeInstruction = `You are an expert prompt engineer. Rewrite and optimize the user's prompt based on these settings:
+      // Single Gemini call: optimize + score together to halve API usage
+      const combinedPrompt = `You are an expert prompt engineer and quality evaluator.
+
+Task: Rewrite and optimize the following prompt, then score it.
+
+Settings:
 - Tone: ${tone}
 - Purpose: ${purpose}
 - Output Depth: ${depth}
 
-Make the prompt clear, well-structured, and high-performing. Return ONLY the optimized prompt text, nothing else.`;
+Original prompt:
+${prompt}
 
-      const optimizedPrompt = await callGemini(optimizeInstruction, prompt);
+Respond with ONLY valid JSON in this exact format (no markdown, no code block, no extra text):
+{"optimizedPrompt":"<the rewritten prompt>","score":<integer 0-100>}
 
-      const scoreInstruction = `You are a prompt quality evaluator. Score the following optimized prompt on a scale of 0-100 based on:
-- Clarity (how clear and unambiguous it is)
-- Structure (how well-organized it is)
-- Specificity (how detailed and specific the instructions are)
+The score should reflect clarity, structure, and specificity of the optimized prompt.`;
 
-Return ONLY a single integer number between 0 and 100. Nothing else.`;
+      const raw = await callGemini(combinedPrompt);
 
-      const scoreText = await callGemini(scoreInstruction, optimizedPrompt);
-      const promptScore = Math.min(100, Math.max(0, parseInt(scoreText, 10) || 75));
+      // Strip markdown code fences if Gemini wraps the JSON
+      const cleaned = raw.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/```\s*$/i, "").trim();
+
+      let optimizedPrompt: string;
+      let promptScore: number;
+
+      try {
+        const parsed = JSON.parse(cleaned);
+        optimizedPrompt = String(parsed.optimizedPrompt || "").trim();
+        promptScore = Math.min(100, Math.max(0, parseInt(parsed.score, 10) || 75));
+        if (!optimizedPrompt) throw new Error("Empty optimizedPrompt in response");
+      } catch (parseErr) {
+        // Fallback: treat the whole response as the optimized prompt with a default score
+        console.warn("[optimize] JSON parse failed, using raw response as prompt:", parseErr);
+        optimizedPrompt = cleaned;
+        promptScore = 75;
+      }
 
       const saved = await storage.createOptimization({
         originalPrompt: prompt,
@@ -75,8 +121,9 @@ Return ONLY a single integer number between 0 and 100. Nothing else.`;
 
       res.json({ optimizedPrompt: saved.optimizedPrompt, promptScore });
     } catch (error: any) {
-      console.error("[optimize] Gemini error:", error?.message || error);
       const msg: string = error?.message || "";
+      console.error("[optimize] Error:", msg);
+
       const message = msg.includes("GEMINI_API_KEY")
         ? "Gemini API key is not configured. Please set the GEMINI_API_KEY secret."
         : msg.includes("429")
@@ -84,6 +131,7 @@ Return ONLY a single integer number between 0 and 100. Nothing else.`;
         : msg.includes("401") || msg.includes("403")
         ? "Invalid Gemini API key. Please check your GEMINI_API_KEY secret."
         : "Optimization failed. Please try again.";
+
       res.status(500).json({ message });
     }
   });
