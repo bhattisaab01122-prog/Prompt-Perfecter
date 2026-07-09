@@ -30,29 +30,25 @@ async function callGemini(prompt: string): Promise<string> {
   if (!response.ok) {
     const body = await response.text();
 
-    // Log full 429 details including headers
-    if (response.status === 429) {
-      const retryAfter = response.headers.get("Retry-After") || response.headers.get("retry-after");
-      const quotaType =
-        response.headers.get("x-ratelimit-limit-requests") ||
-        response.headers.get("X-RateLimit-Limit-Requests");
-      const remaining =
-        response.headers.get("x-ratelimit-remaining-requests") ||
-        response.headers.get("X-RateLimit-Remaining-Requests");
+    // Log full error details including ALL headers and body
+    {
+      console.error(`[Gemini ${response.status}] Full error dump`);
 
-      console.error("[Gemini 429] Rate limit hit");
-      console.error("[Gemini 429] Retry-After:", retryAfter ?? "not provided");
-      console.error("[Gemini 429] Quota limit:", quotaType ?? "not provided");
-      console.error("[Gemini 429] Remaining quota:", remaining ?? "not provided");
-      console.error("[Gemini 429] Response body:", body);
+      // Dump every response header
+      const allHeaders: Record<string, string> = {};
+      response.headers.forEach((value, key) => { allHeaders[key] = value; });
+      console.error(`[Gemini ${response.status}] All response headers:`, JSON.stringify(allHeaders, null, 2));
 
-      // Parse quota type from body if available
+      // Full raw body
+      console.error(`[Gemini ${response.status}] Raw response body:`, body);
+
+      // Parse structured details from body
       try {
         const parsed = JSON.parse(body);
         const details = parsed?.error?.details;
-        if (details) {
-          console.error("[Gemini 429] Error details:", JSON.stringify(details, null, 2));
-        }
+        const message = parsed?.error?.message;
+        if (message) console.error(`[Gemini ${response.status}] Error message:`, message);
+        if (details) console.error(`[Gemini ${response.status}] Error details:`, JSON.stringify(details, null, 2));
       } catch {}
     }
 
