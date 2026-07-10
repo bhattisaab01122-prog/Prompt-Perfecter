@@ -96,12 +96,16 @@ The score should reflect clarity, structure, and specificity of the optimized pr
     }
   });
 
-  const existing = await storage.getOptimizations();
-  if (existing.length === 0) {
-    await storage.createOptimization({
-      originalPrompt: "Write a blog post about AI.",
-      optimizedPrompt: "Write a comprehensive and engaging blog post about the current state of Artificial Intelligence, focusing on its impact on creative industries. Include real-world examples, potential future developments, and address common ethical concerns. The tone should be informative yet accessible to a general audience.",
-    });
+  try {
+    const existing = await storage.getOptimizations();
+    if (existing.length === 0) {
+      await storage.createOptimization({
+        originalPrompt: "Write a blog post about AI.",
+        optimizedPrompt: "Write a comprehensive and engaging blog post about the current state of Artificial Intelligence, focusing on its impact on creative industries. Include real-world examples, potential future developments, and address common ethical concerns. The tone should be informative yet accessible to a general audience.",
+      });
+    }
+  } catch (err: any) {
+    console.error("[startup] DB seed skipped — cannot reach database:", err.message);
   }
 
   return httpServer;
