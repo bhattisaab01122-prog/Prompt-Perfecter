@@ -850,9 +850,9 @@ function SEOSection() {
 function ArticlesSection() {
   const articles = [
     {
-      title: "Top 5 ChatGPT Prompts for Business Growth",
-      summary: "Learn how to create professional business strategies and scale your operations with optimized prompts.",
-      url: "#optimizer",
+      title: "50 Best ChatGPT Prompts for Productivity & Business Growth",
+      summary: "50 ready-to-use prompts organized by category — business, marketing, coding, content, and more.",
+      url: "/articles/chatgpt-prompts-productivity",
     },
     {
       title: "How to Avoid Hallucinations in AI Results",

@@ -11,6 +11,7 @@ import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import ContactUs from "@/pages/ContactUs";
 import HallucinationsArticle from "@/pages/HallucinationsArticle";
 import MidjourneyArticle from "@/pages/MidjourneyArticle";
+import ChatGPTProductivityArticle from "@/pages/ChatGPTProductivityArticle";
 import TermsOfService from "@/pages/TermsOfService";
 
 function Router() {
@@ -23,6 +24,7 @@ function Router() {
       <Route path="/terms" component={TermsOfService} />
       <Route path="/articles/hallucinations" component={HallucinationsArticle} />
       <Route path="/articles/midjourney" component={MidjourneyArticle} />
+      <Route path="/articles/chatgpt-prompts-productivity" component={ChatGPTProductivityArticle} />
       <Route component={NotFound} />
     </Switch>
   );

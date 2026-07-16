@@ -8,6 +8,7 @@ const KNOWN_ROUTES = [
   "/contact",
   "/articles/hallucinations",
   "/articles/midjourney",
+  "/articles/chatgpt-prompts-productivity",
   "/terms",
 ];
 
